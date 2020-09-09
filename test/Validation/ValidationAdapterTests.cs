@@ -143,7 +143,7 @@ namespace Shipwright.Validation
                 cancellationToken = new CancellationToken( canceled );
                 context.validators.Clear();
                 var ex = await Assert.ThrowsAsync<InvalidOperationException>( method );
-                Assert.Equal( string.Format( Resources.CoreErrorMessages.MissingRequiredValidator, typeof( ValidationRequired ) ), ex.Message );
+                Assert.Equal( string.Format( Resources.CoreErrorMessages.MissingRequiredImplementation, typeof( IValidator<ValidationRequired> ) ), ex.Message );
             }
         }
 
@@ -245,7 +245,7 @@ namespace Shipwright.Validation
                 cancellationToken = new CancellationToken( canceled );
                 context.validators.Clear();
                 var ex = await Assert.ThrowsAsync<InvalidOperationException>( method );
-                Assert.Equal( string.Format( Resources.CoreErrorMessages.MissingRequiredValidator, typeof( ValidationRequired ) ), ex.Message );
+                Assert.Equal( string.Format( Resources.CoreErrorMessages.MissingRequiredImplementation, typeof( IValidator<ValidationRequired> ) ), ex.Message );
             }
         }
     }

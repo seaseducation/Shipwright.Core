@@ -46,7 +46,7 @@ namespace Shipwright.Validation
 
             if ( instance is IRequiresValidation && !validators.Any() )
             {
-                throw new InvalidOperationException( string.Format( Resources.CoreErrorMessages.MissingRequiredValidator, typeof( T ) ) );
+                throw new InvalidOperationException( string.Format( Resources.CoreErrorMessages.MissingRequiredImplementation, typeof( IValidator<T> ) ) );
             }
 
             var errors = new List<ValidationFailure>();
