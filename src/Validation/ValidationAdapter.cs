@@ -44,7 +44,7 @@ namespace Shipwright.Validation
         {
             if ( instance == null ) throw new ArgumentNullException( nameof( instance ) );
 
-            if ( instance is IValidatable && !validators.Any() )
+            if ( instance is IRequiresValidation && !validators.Any() )
             {
                 throw new InvalidOperationException( string.Format( Resources.CoreErrorMessages.MissingRequiredValidator, typeof( T ) ) );
             }
@@ -53,7 +53,7 @@ namespace Shipwright.Validation
 
             foreach ( var validator in validators )
             {
-                var result = validator.Validate( instance );
+                var result = await validator.ValidateAsync( instance, cancellationToken );
 
                 if ( !result.IsValid )
                 {

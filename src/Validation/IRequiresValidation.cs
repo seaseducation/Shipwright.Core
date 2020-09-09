@@ -9,5 +9,5 @@ namespace Shipwright.Validation
     /// Marker interface that indicates a type requires a validator.
     /// </summary>
 
-    public interface IValidatable { }
+    public interface IRequiresValidation { }
 }
