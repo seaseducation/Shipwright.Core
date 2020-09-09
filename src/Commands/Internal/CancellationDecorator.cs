@@ -17,7 +17,7 @@ namespace Shipwright.Commands.Internal
 
     public class CancellationDecorator<TCommand, TResult> : CommandHandler<TCommand, TResult> where TCommand : Command<TResult>
     {
-        private readonly ICommandHandler<TCommand, TResult> inner;
+        internal readonly ICommandHandler<TCommand, TResult> inner;
 
         /// <summary>
         /// Decorates a command handler to add pre-execution cancellation support.

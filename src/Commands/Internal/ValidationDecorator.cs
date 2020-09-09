@@ -18,8 +18,8 @@ namespace Shipwright.Commands.Internal
 
     public class ValidationDecorator<TCommand, TResult> : CommandHandler<TCommand, TResult> where TCommand : Command<TResult>
     {
-        private readonly ICommandHandler<TCommand, TResult> inner;
-        private readonly IValidationAdapter<TCommand> validator;
+        internal readonly ICommandHandler<TCommand, TResult> inner;
+        internal readonly IValidationAdapter<TCommand> validator;
 
         /// <summary>
         /// Decorates a command handler to add pre-execution validation support.
