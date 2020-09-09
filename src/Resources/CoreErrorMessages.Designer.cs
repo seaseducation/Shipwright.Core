@@ -61,11 +61,11 @@ namespace Shipwright.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unable to find a required implementation of IValidator&lt;{0}&gt;.
+        ///   Looks up a localized string similar to Unable to find a required implementation of the type {0}.
         /// </summary>
-        public static string MissingRequiredValidator {
+        public static string MissingRequiredImplementation {
             get {
-                return ResourceManager.GetString("MissingRequiredValidator", resourceCulture);
+                return ResourceManager.GetString("MissingRequiredImplementation", resourceCulture);
             }
         }
     }
