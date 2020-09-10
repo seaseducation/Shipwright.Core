@@ -25,7 +25,7 @@ namespace Shipwright.Validation
         /// <summary>
         /// Constructs and adapter for encapsulating validation functionality.
         /// </summary>
-        /// <param name="validators">Collection of validators defiend for the type.</param>
+        /// <param name="validators">Collection of validators defined for the type.</param>
 
         public ValidationAdapter( IEnumerable<IValidator<T>> validators )
         {
