@@ -2,7 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-
+    <RootNamespace>Shipwright</RootNamespace>
+    <NoWarn>1701;1702;1998</NoWarn>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
