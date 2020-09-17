@@ -4,8 +4,9 @@
 // See https://opensource.org/licenses/Apache-2.0 or the LICENSE file in the repository root for the full text of the license.
 
 using AutoFixture;
+using FluentValidation;
 using Moq;
-using Shipwright.Resources;
+using Shipwright.Validation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,32 +16,42 @@ using Xunit;
 
 namespace Shipwright.Dataflows.Sources.Internal
 {
-    public class SourceDispatcherTests
+    public class ValidationDecoratorTests
     {
-        private IServiceProvider serviceProvider;
+        private ISourceHandler<FakeSource> inner;
+        private IValidationAdapter<FakeSource> validator;
 
-        private ISourceDispatcher instance() => new SourceDispatcher( serviceProvider );
+        private ISourceHandler<FakeSource> instance() => new ValidationDecorator<FakeSource>( inner, validator );
 
-        private readonly Mock<IServiceProvider> mockServiceProvider;
+        private readonly Mock<ISourceHandler<FakeSource>> mockInner;
+        private readonly Mock<IValidationAdapter<FakeSource>> mockValidator;
 
-        public SourceDispatcherTests()
+        public ValidationDecoratorTests()
         {
-            mockServiceProvider = Mockery.Of( out serviceProvider );
+            mockInner = Mockery.Of( out inner );
+            mockValidator = Mockery.Of( out validator );
         }
 
-        public class Constructor : SourceDispatcherTests
+        public class Constructor : ValidationDecoratorTests
         {
             [Fact]
-            public void requires_serviceProvider()
+            public void requires_inner()
             {
-                serviceProvider = null!;
-                Assert.Throws<ArgumentNullException>( nameof( serviceProvider ), instance );
+                inner = null!;
+                Assert.Throws<ArgumentNullException>( nameof( inner ), instance );
+            }
+
+            [Fact]
+            public void requires_validator()
+            {
+                validator = null!;
+                Assert.Throws<ArgumentNullException>( nameof( validator ), instance );
             }
         }
 
-        public class Read : SourceDispatcherTests
+        public class Read : ValidationDecoratorTests
         {
-            private Source source = new FakeSource();
+            private FakeSource source = new FakeSource();
             private StringComparer comparer;
             private CancellationToken cancellationToken;
 
@@ -54,12 +65,13 @@ namespace Shipwright.Dataflows.Sources.Internal
             }
 
             [Fact]
-            public async Task throws_when_handler_not_found()
+            public async Task rethrows_exception_from_validator()
             {
-                mockServiceProvider.Setup( _ => _.GetService( typeof( ISourceHandler<FakeSource> ) ) ).Returns( null ).Verifiable();
+                var expected = new ValidationException( Guid.NewGuid().ToString() );
+                mockValidator.Setup( _ => _.ValidateAndThrow( source, cancellationToken ) ).Throws( expected );
 
-                var actual = await Assert.ThrowsAsync<InvalidOperationException>( method );
-                Assert.Equal( string.Format( CoreErrorMessages.MissingRequiredImplementation, typeof( ISourceHandler<FakeSource> ) ), actual.Message );
+                var actual = await Assert.ThrowsAsync<ValidationException>( method );
+                Assert.Same( expected, actual );
             }
 
             [Theory, ClassData( typeof( SourceArgumentCases ) )]
@@ -67,9 +79,6 @@ namespace Shipwright.Dataflows.Sources.Internal
             {
                 this.comparer = comparer;
                 cancellationToken = new CancellationToken( canceled );
-
-                var mockHandler = Mockery.Of( out ISourceHandler<FakeSource> handler );
-                mockServiceProvider.Setup( _ => _.GetService( typeof( ISourceHandler<FakeSource> ) ) ).Returns( handler );
 
                 var fixture = new Fixture();
                 var expected = Enumerable.Range( 0, 3 ).Select( position => new Record( source, fixture.Create<IDictionary<string, object>>(), position, comparer ) ).ToArray();
@@ -82,7 +91,8 @@ namespace Shipwright.Dataflows.Sources.Internal
                     }
                 }
 
-                mockHandler.Setup( _ => _.Read( (FakeSource)source, comparer, cancellationToken ) ).Returns( callback );
+                mockValidator.Setup( _ => _.ValidateAndThrow( source, cancellationToken ) ).Returns( Task.CompletedTask );
+                mockInner.Setup( _ => _.Read( source, comparer, cancellationToken ) ).Returns( callback );
 
                 var actual = await method();
                 Assert.Equal( expected, actual );
