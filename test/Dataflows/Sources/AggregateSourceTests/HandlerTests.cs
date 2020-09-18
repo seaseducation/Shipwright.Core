@@ -4,7 +4,6 @@
 // See https://opensource.org/licenses/Apache-2.0 or the LICENSE file in the repository root for the full text of the license.
 
 using AutoFixture;
-using AutoFixture.Kernel;
 using Moq;
 using Shipwright.Dataflows.Sources.Internal;
 using System;
@@ -69,14 +68,12 @@ namespace Shipwright.Dataflows.Sources.AggregateSourceTests
                 cancellationToken = new CancellationToken( canceled );
 
                 var fixture = new Fixture();
-                fixture.Customizations.Add( new TypeRelay( typeof( Source ), typeof( FakeSource ) ) );
-
                 var sources = fixture.CreateMany<FakeSource>( 3 );
                 var expected = new List<Record>();
 
                 foreach ( var source in sources )
                 {
-                    var records = fixture.CreateMany<Record>();
+                    var records = new[] { new FakeRecord(), new FakeRecord() };
                     expected.AddRange( records );
                     this.source.Sources.Add( source );
 
