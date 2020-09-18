@@ -12,7 +12,7 @@ using System;
 namespace Shipwright.Dataflows
 {
     /// <summary>
-    /// Extension methods for registering dataflow types with Lamar.
+    /// Extension methods for registering dataflow source types with Lamar.
     /// </summary>
 
     public static class LamarDataflowSourceExtensions
