@@ -120,4 +120,13 @@
   <data name="MissingRequiredImplementation" xml:space="preserve">
     <value>Unable to find a required implementation of the type {0}</value>
   </data>
+  <data name="NoNullElementsValidationMessage" xml:space="preserve">
+    <value>'{PropertyName}' cannot contain null elements</value>
+  </data>
+  <data name="NotWhiteSpaceValidationMessage" xml:space="preserve">
+    <value>'{PropertyName}' cannot be empty nor contain only whitespace</value>
+  </data>
+  <data name="NoWhiteSpaceElementsValidationMessage" xml:space="preserve">
+    <value>'{PropertyName}' cannot contain whitespace elements</value>
+  </data>
 </root>
