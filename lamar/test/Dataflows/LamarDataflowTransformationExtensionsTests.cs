@@ -5,6 +5,7 @@
 
 using Lamar;
 using Lamar.Scanning.Conventions;
+using Moq;
 using Shipwright.Dataflows.Transformations;
 using Shipwright.Dataflows.Transformations.Internal;
 using System;
@@ -18,7 +19,7 @@ namespace Shipwright.Dataflows
     {
         private ServiceRegistry registry = new ServiceRegistry();
 
-        public class AddSourceDispatch : LamarDataflowTransformationExtensionsTests
+        public class AddTransformationDispatch : LamarDataflowTransformationExtensionsTests
         {
             private ServiceRegistry method() => registry.AddTransformationDispatch();
 
@@ -75,6 +76,33 @@ namespace Shipwright.Dataflows
                 using var container = new Container( registry );
                 var instance = container.GetInstance<ITransformationFactory<FakeTransformation>>();
                 Assert.IsType<FakeTransformationFactory>( instance );
+            }
+        }
+
+        public class AddTransformationCancellation : LamarDataflowTransformationExtensionsTests
+        {
+            private ServiceRegistry method() => registry.AddTransformationCancellation();
+
+            [Fact]
+            public void requires_registry()
+            {
+                registry = null!;
+                Assert.Throws<ArgumentNullException>( nameof( registry ), method );
+            }
+
+            [Fact]
+            public void decorates_handler()
+            {
+                var inner = Mockery.Of<ITransformationFactory<FakeTransformation>>();
+                registry.For<ITransformationFactory<FakeTransformation>>().Add( inner );
+
+                var actual = method();
+                Assert.Same( registry, actual );
+
+                using var container = new Container( registry );
+                var instance = container.GetInstance<ITransformationFactory<FakeTransformation>>();
+                var decorator = Assert.IsType<CancellationFactoryDecorator<FakeTransformation>>( instance );
+                Assert.Same( inner, decorator.inner );
             }
         }
     }
