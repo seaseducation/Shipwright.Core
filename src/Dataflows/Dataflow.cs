@@ -6,6 +6,7 @@
 using Shipwright.Commands;
 using Shipwright.Dataflows.Sources;
 using Shipwright.Dataflows.Transformations;
+using System;
 using System.Collections.Generic;
 
 namespace Shipwright.Dataflows
@@ -34,5 +35,12 @@ namespace Shipwright.Dataflows
         /// </summary>
 
         public ICollection<Transformation> Transformations { get; init; } = new List<Transformation>();
+
+        /// <summary>
+        /// Comparer for record field names.
+        /// Defaults to <see cref="StringComparer.OrdinalIgnoreCase"/>.
+        /// </summary>
+
+        public StringComparer FieldNameComparer { get; init; } = StringComparer.OrdinalIgnoreCase;
     }
 }
