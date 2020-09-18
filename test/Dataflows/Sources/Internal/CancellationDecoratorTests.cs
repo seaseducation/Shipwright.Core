@@ -52,6 +52,13 @@ namespace Shipwright.Dataflows.Sources.Internal
                 await Assert.ThrowsAsync<ArgumentNullException>( nameof( source ), method );
             }
 
+            [Fact]
+            public async Task requires_comparer()
+            {
+                comparer = null!;
+                await Assert.ThrowsAsync<ArgumentNullException>( nameof( comparer ), method );
+            }
+
             [Theory, AutoData]
             public async Task throws_when_canceled_early( StringComparer comparer )
             {

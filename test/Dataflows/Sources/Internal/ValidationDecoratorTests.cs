@@ -4,6 +4,7 @@
 // See https://opensource.org/licenses/Apache-2.0 or the LICENSE file in the repository root for the full text of the license.
 
 using AutoFixture;
+using AutoFixture.Xunit2;
 using FluentValidation;
 using Moq;
 using Shipwright.Validation;
@@ -65,8 +66,16 @@ namespace Shipwright.Dataflows.Sources.Internal
             }
 
             [Fact]
-            public async Task rethrows_exception_from_validator()
+            public async Task requires_comparer()
             {
+                comparer = null!;
+                await Assert.ThrowsAsync<ArgumentNullException>( nameof( comparer ), method );
+            }
+
+            [Theory, AutoData]
+            public async Task rethrows_exception_from_validator( StringComparer comparer )
+            {
+                this.comparer = comparer;
                 var expected = new ValidationException( Guid.NewGuid().ToString() );
                 mockValidator.Setup( _ => _.ValidateAndThrow( source, cancellationToken ) ).Throws( expected );
 

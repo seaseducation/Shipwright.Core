@@ -33,7 +33,10 @@ namespace Shipwright.Dataflows.Sources
 
         IAsyncEnumerable<Record> ISourceHandler<TSource>.Read( TSource source, StringComparer comparer, CancellationToken cancellationToken )
         {
-            return source == null ? throw new ArgumentNullException( nameof( source ) ) : Read( source, comparer, cancellationToken );
+            if ( source == null ) throw new ArgumentNullException( nameof( source ) );
+            if ( comparer == null ) throw new ArgumentNullException( nameof( comparer ) );
+
+            return Read( source, comparer, cancellationToken );
         }
     }
 }
