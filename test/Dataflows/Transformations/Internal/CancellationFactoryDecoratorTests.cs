@@ -14,7 +14,6 @@ namespace Shipwright.Dataflows.Transformations.Internal
     public class CancellationFactoryDecoratorTests
     {
         private ITransformationFactory<FakeTransformation> inner;
-
         private ITransformationFactory<FakeTransformation> instance() => new CancellationFactoryDecorator<FakeTransformation>( inner );
 
         private readonly Mock<ITransformationFactory<FakeTransformation>> mockInner;

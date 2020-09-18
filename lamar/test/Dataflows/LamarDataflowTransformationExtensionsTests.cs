@@ -8,6 +8,7 @@ using Lamar.Scanning.Conventions;
 using Moq;
 using Shipwright.Dataflows.Transformations;
 using Shipwright.Dataflows.Transformations.Internal;
+using Shipwright.Validation;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -76,6 +77,36 @@ namespace Shipwright.Dataflows
                 using var container = new Container( registry );
                 var instance = container.GetInstance<ITransformationFactory<FakeTransformation>>();
                 Assert.IsType<FakeTransformationFactory>( instance );
+            }
+        }
+
+        public class AddTransformationValidation : LamarDataflowTransformationExtensionsTests
+        {
+            private ServiceRegistry method() => registry.AddTransformationValidation();
+
+            [Fact]
+            public void requires_registry()
+            {
+                registry = null!;
+                Assert.Throws<ArgumentNullException>( nameof( registry ), method );
+            }
+
+            [Fact]
+            public void decorates_handler()
+            {
+                var inner = Mockery.Of<ITransformationFactory<FakeTransformation>>();
+                var validator = Mockery.Of<IValidationAdapter<FakeTransformation>>();
+                registry.For<ITransformationFactory<FakeTransformation>>().Add( inner );
+                registry.For<IValidationAdapter<FakeTransformation>>().Add( validator );
+
+                var actual = method();
+                Assert.Same( registry, actual );
+
+                using var container = new Container( registry );
+                var instance = container.GetInstance<ITransformationFactory<FakeTransformation>>();
+                var decorator = Assert.IsType<ValidationFactoryDecorator<FakeTransformation>>( instance );
+                Assert.Same( inner, decorator.inner );
+                Assert.Same( validator, decorator.validator );
             }
         }
 

@@ -46,6 +46,20 @@ namespace Shipwright.Dataflows
         }
 
         /// <summary>
+        /// Adds the validation decorator to all implementations of <see cref="ITransformationFactory{TTransformation}"/>.
+        /// </summary>
+        /// <param name="registry">Lamar service registry.</param>
+        /// <returns>The service registry.</returns>
+
+        public static ServiceRegistry AddTransformationValidation( this ServiceRegistry registry )
+        {
+            if ( registry == null ) throw new ArgumentNullException( nameof( registry ) );
+
+            registry.For( typeof( ITransformationFactory<> ) ).DecorateAllWith( typeof( ValidationFactoryDecorator<> ) );
+            return registry;
+        }
+
+        /// <summary>
         /// Adds the cancellation decorator to all implementations of <see cref="ITransformationFactory{TTransformation}"/>.
         /// </summary>
         /// <param name="registry">Lamar service registry.</param>
