@@ -32,11 +32,11 @@ namespace Shipwright.Dataflows.Sources.Internal
         /// Reads records from the given dataflow source.
         /// </summary>
         /// <param name="source">Dataflow record source.</param>
-        /// <param name="comparer">String comparer for record field names.</param>
+        /// <param name="dataflow">Dataflow in which the source is read.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>An awaitable stream of dataflow records.</returns>
 
-        public IAsyncEnumerable<Record> Read( Source source, StringComparer comparer, CancellationToken cancellationToken )
+        public IAsyncEnumerable<Record> Read( Source source, Dataflow dataflow, CancellationToken cancellationToken )
         {
             if ( source == null ) throw new ArgumentNullException( nameof( source ) );
 
@@ -49,7 +49,7 @@ namespace Shipwright.Dataflows.Sources.Internal
             // use of the dynamic type offloads the complex reflection, expression tree caching,
             // and delegate compilation to the DLR. this results in reflection overhead only applying
             // to the first call; subsequent calls perform similar to statically-compiled statements.
-            return handler.Read( (dynamic)source, comparer, cancellationToken );
+            return handler.Read( (dynamic)source, dataflow, cancellationToken );
         }
     }
 }

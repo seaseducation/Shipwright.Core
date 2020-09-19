@@ -5,7 +5,6 @@
 
 using AutoFixture;
 using Moq;
-using Shipwright.Dataflows.Sources.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +18,6 @@ namespace Shipwright.Dataflows.Sources.AggregateSourceTests
     public class HandlerTests
     {
         private ISourceDispatcher sourceDispatcher;
-
         private ISourceHandler<AggregateSource> instance() => new Handler( sourceDispatcher );
 
         private readonly Mock<ISourceDispatcher> mockSourceDispatcher;
@@ -42,10 +40,10 @@ namespace Shipwright.Dataflows.Sources.AggregateSourceTests
         public class Read : HandlerTests
         {
             private AggregateSource source = new AggregateSource { };
-            private StringComparer comparer;
+            private Dataflow dataflow = new Dataflow();
             private CancellationToken cancellationToken;
 
-            private async Task<List<Record>> method() => await instance().Read( source, comparer, cancellationToken ).ToListAsync();
+            private async Task<List<Record>> method() => await instance().Read( source, dataflow, cancellationToken ).ToListAsync();
 
             [Fact]
             public async Task requires_source()
@@ -55,29 +53,28 @@ namespace Shipwright.Dataflows.Sources.AggregateSourceTests
             }
 
             [Fact]
-            public async Task requires_comparer()
+            public async Task requires_dataflow()
             {
-                comparer = null!;
-                await Assert.ThrowsAsync<ArgumentNullException>( nameof( comparer ), method );
+                dataflow = null!;
+                await Assert.ThrowsAsync<ArgumentNullException>( nameof( dataflow ), method );
             }
 
-            [Theory, ClassData( typeof( SourceArgumentCases ) )]
-            public async Task reads_data_from_child_sources( StringComparer comparer, bool canceled )
+            [Theory, ClassData( typeof( Cases.BooleanCases ) )]
+            public async Task reads_data_from_child_sources( bool canceled )
             {
-                this.comparer = comparer;
                 cancellationToken = new CancellationToken( canceled );
 
-                var fixture = new Fixture();
+                var fixture = FakeRecord.Fixture();
                 var sources = fixture.CreateMany<FakeSource>( 3 );
                 var expected = new List<Record>();
 
                 foreach ( var source in sources )
                 {
-                    var records = new[] { new FakeRecord(), new FakeRecord() };
+                    var records = fixture.CreateMany<Record>();
                     expected.AddRange( records );
                     this.source.Sources.Add( source );
 
-                    mockSourceDispatcher.Setup( _ => _.Read( source, comparer, cancellationToken ) ).Returns( records.ToAsyncEnumerable() );
+                    mockSourceDispatcher.Setup( _ => _.Read( source, dataflow, cancellationToken ) ).Returns( records.ToAsyncEnumerable() );
                 }
 
                 var actual = await method();

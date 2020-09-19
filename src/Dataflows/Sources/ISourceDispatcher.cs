@@ -3,7 +3,6 @@
 // Licensed under the Apache License, Version 2.0
 // See https://opensource.org/licenses/Apache-2.0 or the LICENSE file in the repository root for the full text of the license.
 
-using System;
 using System.Collections.Generic;
 using System.Threading;
 
@@ -19,10 +18,10 @@ namespace Shipwright.Dataflows.Sources
         /// Reads records from the given dataflow source.
         /// </summary>
         /// <param name="source">Dataflow record source.</param>
-        /// <param name="comparer">String comparer for record field names.</param>
+        /// <param name="dataflow">Dataflow in which the source is being read.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>An awaitable stream of dataflow records.</returns>
 
-        IAsyncEnumerable<Record> Read( Source source, StringComparer comparer, CancellationToken cancellationToken );
+        IAsyncEnumerable<Record> Read( Source source, Dataflow dataflow, CancellationToken cancellationToken );
     }
 }

@@ -18,7 +18,6 @@ namespace Shipwright.Dataflows.Sources.Internal
     public class SourceDispatcherTests
     {
         private IServiceProvider serviceProvider;
-
         private ISourceDispatcher instance() => new SourceDispatcher( serviceProvider );
 
         private readonly Mock<IServiceProvider> mockServiceProvider;
@@ -40,11 +39,11 @@ namespace Shipwright.Dataflows.Sources.Internal
 
         public class Read : SourceDispatcherTests
         {
+            private readonly Dataflow dataflow = FakeRecord.Fixture().Create<Dataflow>();
             private Source source = new FakeSource();
-            private StringComparer comparer;
             private CancellationToken cancellationToken;
 
-            private async Task<List<Record>> method() => await instance().Read( source, comparer, cancellationToken ).ToListAsync();
+            private async Task<List<Record>> method() => await instance().Read( source, dataflow, cancellationToken ).ToListAsync();
 
             [Fact]
             public async Task requires_source()
@@ -62,17 +61,18 @@ namespace Shipwright.Dataflows.Sources.Internal
                 Assert.Equal( string.Format( CoreErrorMessages.MissingRequiredImplementation, typeof( ISourceHandler<FakeSource> ) ), actual.Message );
             }
 
-            [Theory, ClassData( typeof( SourceArgumentCases ) )]
-            public async Task returns_records( StringComparer comparer, bool canceled )
+            [Theory, ClassData( typeof( Cases.BooleanCases ) )]
+            public async Task returns_records( bool canceled )
             {
-                this.comparer = comparer;
                 cancellationToken = new CancellationToken( canceled );
 
                 var mockHandler = Mockery.Of( out ISourceHandler<FakeSource> handler );
                 mockServiceProvider.Setup( _ => _.GetService( typeof( ISourceHandler<FakeSource> ) ) ).Returns( handler );
 
                 var fixture = new Fixture();
-                var expected = Enumerable.Range( 0, 3 ).Select( position => new Record( source, fixture.Create<IDictionary<string, object>>(), position, comparer ) ).ToArray();
+                fixture.Register( () => dataflow );
+                fixture.Register( () => source );
+                var expected = fixture.CreateMany<Record>( 3 );
 
                 async IAsyncEnumerable<Record> callback()
                 {
@@ -82,7 +82,7 @@ namespace Shipwright.Dataflows.Sources.Internal
                     }
                 }
 
-                mockHandler.Setup( _ => _.Read( (FakeSource)source, comparer, cancellationToken ) ).Returns( callback );
+                mockHandler.Setup( _ => _.Read( (FakeSource)source, dataflow, cancellationToken ) ).Returns( callback );
 
                 var actual = await method();
                 Assert.Equal( expected, actual );

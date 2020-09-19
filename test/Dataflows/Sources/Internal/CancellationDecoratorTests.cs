@@ -4,7 +4,6 @@
 // See https://opensource.org/licenses/Apache-2.0 or the LICENSE file in the repository root for the full text of the license.
 
 using AutoFixture;
-using AutoFixture.Xunit2;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -40,10 +39,10 @@ namespace Shipwright.Dataflows.Sources.Internal
         public class Read : CancellationDecoratorTests
         {
             private FakeSource source = new FakeSource();
-            private StringComparer comparer;
+            private Dataflow dataflow = FakeRecord.Fixture().Create<Dataflow>();
             private CancellationToken cancellationToken;
 
-            private async Task<List<Record>> method() => await instance().Read( source, comparer, cancellationToken ).ToListAsync();
+            private async Task<List<Record>> method() => await instance().Read( source, dataflow, cancellationToken ).ToListAsync();
 
             [Fact]
             public async Task requires_source()
@@ -53,31 +52,29 @@ namespace Shipwright.Dataflows.Sources.Internal
             }
 
             [Fact]
-            public async Task requires_comparer()
+            public async Task requires_dataflow()
             {
-                comparer = null!;
-                await Assert.ThrowsAsync<ArgumentNullException>( nameof( comparer ), method );
+                dataflow = null!;
+                await Assert.ThrowsAsync<ArgumentNullException>( nameof( dataflow ), method );
             }
 
-            [Theory, AutoData]
-            public async Task throws_when_canceled_early( StringComparer comparer )
+            [Fact]
+            public async Task throws_when_canceled_early()
             {
-                this.comparer = comparer;
                 cancellationToken = new CancellationToken( true );
-
                 await Assert.ThrowsAsync<OperationCanceledException>( method );
             }
 
-            [Theory, AutoData]
-            public async Task throws_when_canceled_late( StringComparer comparer )
+            [Fact]
+            public async Task throws_when_canceled_late()
             {
-                this.comparer = comparer;
-
                 using var cts = new CancellationTokenSource();
                 cancellationToken = cts.Token;
 
                 var fixture = new Fixture();
-                var records = Enumerable.Range( 0, 3 ).Select( position => new Record( source, fixture.Create<IDictionary<string, object>>(), position, comparer ) ).ToArray();
+                fixture.Register( () => dataflow );
+                fixture.Register<Source>( () => source );
+                var records = fixture.CreateMany<Record>( 3 );
 
                 async IAsyncEnumerable<Record> callback()
                 {
@@ -88,18 +85,19 @@ namespace Shipwright.Dataflows.Sources.Internal
                     }
                 }
 
-                mockInner.Setup( _ => _.Read( source, comparer, cancellationToken ) ).Returns( callback );
+                mockInner.Setup( _ => _.Read( source, dataflow, cancellationToken ) ).Returns( callback );
                 await Assert.ThrowsAsync<OperationCanceledException>( method );
             }
 
-            [Theory, AutoData]
-            public async Task returns_records( StringComparer comparer )
+            [Fact]
+            public async Task returns_records()
             {
-                this.comparer = comparer;
                 cancellationToken = new CancellationToken( false );
 
                 var fixture = new Fixture();
-                var expected = Enumerable.Range( 0, 3 ).Select( position => new Record( source, fixture.Create<IDictionary<string, object>>(), position, comparer ) ).ToArray();
+                fixture.Register( () => dataflow );
+                fixture.Register<Source>( () => source );
+                var expected = fixture.CreateMany<Record>();
 
                 async IAsyncEnumerable<Record> callback()
                 {
@@ -109,7 +107,7 @@ namespace Shipwright.Dataflows.Sources.Internal
                     }
                 }
 
-                mockInner.Setup( _ => _.Read( source, comparer, cancellationToken ) ).Returns( callback );
+                mockInner.Setup( _ => _.Read( source, dataflow, cancellationToken ) ).Returns( callback );
 
                 var actual = await method();
                 Assert.Equal( expected, actual );

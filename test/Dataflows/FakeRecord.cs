@@ -5,14 +5,29 @@
 
 using AutoFixture;
 using Shipwright.Dataflows.Sources;
-using System;
-using System.Collections.Generic;
+using Shipwright.Dataflows.Transformations;
 
 namespace Shipwright.Dataflows
 {
-    public record FakeRecord : Record
+    public static class FakeRecord
     {
-        private static readonly Fixture fixture = new Fixture();
-        public FakeRecord() : base( new FakeSource(), fixture.Create<IDictionary<string, object>>(), fixture.Create<int>(), StringComparer.OrdinalIgnoreCase ) { }
+        /// <summary>
+        /// Returns a fixture for generating records.
+        /// </summary>
+
+        public static Fixture Fixture()
+        {
+            var fixture = new Fixture();
+            fixture.Register<Source>( () => new FakeSource() );
+            fixture.Register<Transformation>( () => new FakeTransformation() );
+
+            return fixture;
+        }
+
+        /// <summary>
+        /// Returns a record.
+        /// </summary>
+
+        public static Record Create() => Fixture().Create<Record>();
     }
 }

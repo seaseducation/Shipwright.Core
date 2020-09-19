@@ -67,7 +67,7 @@ namespace Shipwright.Dataflows
                 using var link1 = buffer.LinkTo( transformer, linkOptions );
                 using var link2 = transformer.LinkTo( logger, linkOptions );
 
-                await foreach ( var record in sourceDispatcher.Read( source, command.FieldNameComparer, cancellationToken ) )
+                await foreach ( var record in sourceDispatcher.Read( source, command, cancellationToken ) )
                 {
                     await buffer.SendAsync( record, cancellationToken );
                 }

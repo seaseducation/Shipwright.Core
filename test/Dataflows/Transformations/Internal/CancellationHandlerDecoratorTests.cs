@@ -36,7 +36,7 @@ namespace Shipwright.Dataflows.Transformations.Internal
 
         public class Transform : CancellationHandlerDecoratorTests
         {
-            private Record record = new FakeRecord();
+            private Record record = FakeRecord.Create();
             private CancellationToken cancellationToken;
 
             private Task method() => instance().Transform( record, cancellationToken );

@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
 
@@ -33,16 +34,14 @@ namespace Shipwright.Dataflows.Sources
             /// <summary>
             /// Reads data from the underlying data sources.
             /// </summary>
-            /// <param name="source">Aggregate source from which to read.</param>
-            /// <param name="comparer">Comparer for record field names.</param>
-            /// <param name="cancellationToken">Cancellation token.</param>
-            /// <returns>A stream of records from the data sources.</returns>
 
-            protected override async IAsyncEnumerable<Record> Read( AggregateSource source, StringComparer comparer, [EnumeratorCancellation] CancellationToken cancellationToken )
+            protected override async IAsyncEnumerable<Record> Read( AggregateSource source, Dataflow dataflow, [EnumeratorCancellation] CancellationToken cancellationToken )
             {
-                foreach ( var child in source.Sources )
+                var sources = source.Sources.ToArray();
+
+                foreach ( var child in sources )
                 {
-                    await foreach ( var record in sourceDispatcher.Read( child, comparer, cancellationToken ) )
+                    await foreach ( var record in sourceDispatcher.Read( child, dataflow, cancellationToken ) )
                     {
                         yield return record;
                     }

@@ -4,7 +4,6 @@
 // See https://opensource.org/licenses/Apache-2.0 or the LICENSE file in the repository root for the full text of the license.
 
 using AutoFixture;
-using AutoFixture.Xunit2;
 using FluentValidation;
 using Moq;
 using Shipwright.Validation;
@@ -52,11 +51,10 @@ namespace Shipwright.Dataflows.Sources.Internal
 
         public class Read : ValidationDecoratorTests
         {
+            private Dataflow dataflow = FakeRecord.Fixture().Create<Dataflow>();
             private FakeSource source = new FakeSource();
-            private StringComparer comparer;
             private CancellationToken cancellationToken;
-
-            private async Task<List<Record>> method() => await instance().Read( source, comparer, cancellationToken ).ToListAsync();
+            private async Task<List<Record>> method() => await instance().Read( source, dataflow, cancellationToken ).ToListAsync();
 
             [Fact]
             public async Task requires_source()
@@ -66,16 +64,15 @@ namespace Shipwright.Dataflows.Sources.Internal
             }
 
             [Fact]
-            public async Task requires_comparer()
+            public async Task requires_dataflow()
             {
-                comparer = null!;
-                await Assert.ThrowsAsync<ArgumentNullException>( nameof( comparer ), method );
+                dataflow = null!;
+                await Assert.ThrowsAsync<ArgumentNullException>( nameof( dataflow ), method );
             }
 
-            [Theory, AutoData]
-            public async Task rethrows_exception_from_validator( StringComparer comparer )
+            [Fact]
+            public async Task rethrows_exception_from_validator()
             {
-                this.comparer = comparer;
                 var expected = new ValidationException( Guid.NewGuid().ToString() );
                 mockValidator.Setup( _ => _.ValidateAndThrow( source, cancellationToken ) ).Throws( expected );
 
@@ -83,14 +80,15 @@ namespace Shipwright.Dataflows.Sources.Internal
                 Assert.Same( expected, actual );
             }
 
-            [Theory, ClassData( typeof( SourceArgumentCases ) )]
-            public async Task returns_records( StringComparer comparer, bool canceled )
+            [Theory, ClassData( typeof( Cases.BooleanCases ) )]
+            public async Task returns_records( bool canceled )
             {
-                this.comparer = comparer;
                 cancellationToken = new CancellationToken( canceled );
 
                 var fixture = new Fixture();
-                var expected = Enumerable.Range( 0, 3 ).Select( position => new Record( source, fixture.Create<IDictionary<string, object>>(), position, comparer ) ).ToArray();
+                fixture.Register( () => dataflow );
+                fixture.Register<Source>( () => source );
+                var expected = fixture.CreateMany<Record>( 3 );
 
                 async IAsyncEnumerable<Record> callback()
                 {
@@ -101,7 +99,7 @@ namespace Shipwright.Dataflows.Sources.Internal
                 }
 
                 mockValidator.Setup( _ => _.ValidateAndThrow( source, cancellationToken ) ).Returns( Task.CompletedTask );
-                mockInner.Setup( _ => _.Read( source, comparer, cancellationToken ) ).Returns( callback );
+                mockInner.Setup( _ => _.Read( source, dataflow, cancellationToken ) ).Returns( callback );
 
                 var actual = await method();
                 Assert.Equal( expected, actual );

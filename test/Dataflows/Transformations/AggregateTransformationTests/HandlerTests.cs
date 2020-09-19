@@ -56,7 +56,7 @@ namespace Shipwright.Dataflows.Transformations.AggregateTransformationTests
 
         public class Transform : HandlerTests
         {
-            private Record record = new FakeRecord();
+            private Record record = FakeRecord.Create();
             private CancellationToken cancellationToken;
             private Task method() => instance().Transform( record, cancellationToken );
 
