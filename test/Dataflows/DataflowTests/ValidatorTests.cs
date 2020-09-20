@@ -57,5 +57,31 @@ namespace Shipwright.Dataflows.DataflowTests
             [Fact]
             public void valid_when_given_non_null_elements() => validator.ValidWhen( _ => _.Transformations, new List<Transformation>( fixture.CreateMany<FakeTransformation>() ) );
         }
+
+        public class BufferSize : ValidatorTests
+        {
+            [Theory]
+            [InlineData( -2 )]
+            [InlineData( 0 )]
+            public void invalid_when_not_positive_except_unbounded( int value ) => validator.InvalidWhen( _ => _.BufferSize, value );
+
+            [Theory]
+            [InlineData( -1 )]
+            [AutoData]
+            public void valid_when_unbounded_or_positive( int value ) => validator.ValidWhen( _ => _.BufferSize, value );
+        }
+
+        public class MaxDegreeOfParallelism : ValidatorTests
+        {
+            [Theory]
+            [InlineData( -2 )]
+            [InlineData( 0 )]
+            public void invalid_when_not_positive_except_unbounded( int value ) => validator.InvalidWhen( _ => _.MaxDegreeOfParallelism, value );
+
+            [Theory]
+            [InlineData( -1 )]
+            [AutoData]
+            public void valid_when_unbounded_or_positive( int value ) => validator.ValidWhen( _ => _.MaxDegreeOfParallelism, value );
+        }
     }
 }

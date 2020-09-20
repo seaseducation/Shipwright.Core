@@ -8,6 +8,7 @@ using Shipwright.Dataflows.Sources;
 using Shipwright.Dataflows.Transformations;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks.Dataflow;
 
 namespace Shipwright.Dataflows
 {
@@ -42,5 +43,20 @@ namespace Shipwright.Dataflows
         /// </summary>
 
         public StringComparer FieldNameComparer { get; init; } = StringComparer.OrdinalIgnoreCase;
+
+        /// <summary>
+        /// Maximum number of records that can be buffered by the dataflow.
+        /// Limiting the size can control memory pressure in large datasets.
+        /// Defaults to unbounded (-1).
+        /// </summary>
+
+        public int BufferSize { get; init; } = DataflowBlockOptions.Unbounded;
+
+        /// <summary>
+        /// Maximum number of records that can be transformed concurrently.
+        /// Defaults to unbounded (-1).
+        /// </summary>
+
+        public int MaxDegreeOfParallelism { get; init; } = DataflowBlockOptions.Unbounded;
     }
 }
