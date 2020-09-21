@@ -24,7 +24,7 @@ namespace Shipwright.Dataflows.Transformations.Internal
         /// Decorates a transformation factory to add validation support.
         /// </summary>
         /// <param name="inner">Transformation factory to decorate.</param>
-        /// <param name="validator">Valdation adapter for the transformation type.</param>
+        /// <param name="validator">Validation adapter for the transformation type.</param>
 
         public ValidationFactoryDecorator( ITransformationFactory<TTransformation> inner, IValidationAdapter<TTransformation> validator )
         {
