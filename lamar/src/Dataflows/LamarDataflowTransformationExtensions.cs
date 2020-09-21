@@ -5,71 +5,71 @@
 
 using Lamar;
 using Lamar.Scanning.Conventions;
-using Shipwright.Dataflows.Sources;
-using Shipwright.Dataflows.Sources.Internal;
+using Shipwright.Dataflows.Transformations;
+using Shipwright.Dataflows.Transformations.Internal;
 using System;
 
 namespace Shipwright.Dataflows
 {
     /// <summary>
-    /// Extension methods for registering dataflow source types with Lamar.
+    /// Extension methods for registering dataflow transformation types with Lamar.
     /// </summary>
 
-    public static class LamarDataflowSourceExtensions
+    public static class LamarDataflowTransformationExtensions
     {
         /// <summary>
-        /// Adds the stock Shipwright dataflow record source dispatcher.
+        /// Adds the stock Shipwright dataflow transformation dispatcher.
         /// </summary>
         /// <param name="registry">Lamar service registry.</param>
         /// <returns>The service registry.</returns>
 
-        public static ServiceRegistry AddSourceDispatch( this ServiceRegistry registry )
+        public static ServiceRegistry AddTransformationDispatch( this ServiceRegistry registry )
         {
             if ( registry == null ) throw new ArgumentNullException( nameof( registry ) );
 
-            registry.For<ISourceDispatcher>().Add<SourceDispatcher>();
+            registry.For<ITransformationDispatcher>().Add<TransformationDispatcher>();
             return registry;
         }
 
         /// <summary>
-        /// Adds all implementations of <see cref="ISourceHandler{TSource}"/> found in the scanned assemblies.
+        /// Adds all implementations of <see cref="ITransformationFactory{TTransformation}"/> found in the scanned assemblies.
         /// </summary>
         /// <param name="scanner">Lamar assembly scanner.</param>
         /// <returns>The assembly scanner.</returns>
 
-        public static IAssemblyScanner AddSourceHandlers( this IAssemblyScanner scanner )
+        public static IAssemblyScanner AddTransformationFactories( this IAssemblyScanner scanner )
         {
             if ( scanner == null ) throw new ArgumentNullException( nameof( scanner ) );
 
-            scanner.ConnectImplementationsToTypesClosing( typeof( ISourceHandler<> ) );
+            scanner.ConnectImplementationsToTypesClosing( typeof( ITransformationFactory<> ) );
             return scanner;
         }
 
         /// <summary>
-        /// Adds the validation decorator to all implementations of <see cref="ISourceHandler{TSource}"/>.
+        /// Adds the validation decorator to all implementations of <see cref="ITransformationFactory{TTransformation}"/>.
         /// </summary>
         /// <param name="registry">Lamar service registry.</param>
         /// <returns>The service registry.</returns>
 
-        public static ServiceRegistry AddSourceValidation( this ServiceRegistry registry )
+        public static ServiceRegistry AddTransformationValidation( this ServiceRegistry registry )
         {
             if ( registry == null ) throw new ArgumentNullException( nameof( registry ) );
 
-            registry.For( typeof( ISourceHandler<> ) ).DecorateAllWith( typeof( ValidationDecorator<> ) );
+            registry.For( typeof( ITransformationFactory<> ) ).DecorateAllWith( typeof( ValidationFactoryDecorator<> ) );
             return registry;
         }
 
         /// <summary>
-        /// Adds the cancellation decorator to all implementations of <see cref="ISourceHandler{TSource}"/>.
+        /// Adds the cancellation decorator to all implementations of <see cref="ITransformationFactory{TTransformation}"/>.
         /// </summary>
         /// <param name="registry">Lamar service registry.</param>
         /// <returns>The service registry.</returns>
 
-        public static ServiceRegistry AddSourceCancellation( this ServiceRegistry registry )
+        public static ServiceRegistry AddTransformationCancellation( this ServiceRegistry registry )
         {
             if ( registry == null ) throw new ArgumentNullException( nameof( registry ) );
 
-            registry.For( typeof( ISourceHandler<> ) ).DecorateAllWith( typeof( CancellationDecorator<> ) );
+            registry.For( typeof( ITransformationFactory<> ) ).DecorateAllWith( typeof( CancellationFactoryDecorator<> ) );
             return registry;
         }
     }
