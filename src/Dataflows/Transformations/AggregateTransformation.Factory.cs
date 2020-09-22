@@ -31,7 +31,7 @@ namespace Shipwright.Dataflows.Transformations
             }
 
             /// <summary>
-            /// Creates and aggregate transformation handler.
+            /// Creates an aggregate transformation handler.
             /// </summary>
 
             protected override async Task<ITransformationHandler> Create( AggregateTransformation transformation, CancellationToken cancellationToken )
