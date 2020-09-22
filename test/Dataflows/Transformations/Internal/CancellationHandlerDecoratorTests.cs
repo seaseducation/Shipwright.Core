@@ -66,5 +66,19 @@ namespace Shipwright.Dataflows.Transformations.Internal
                 mockInner.Verify();
             }
         }
+
+        public class DisposeAsync : CancellationHandlerDecoratorTests
+        {
+            private ValueTask method() => instance().DisposeAsync();
+
+            [Fact]
+            public async ValueTask disposes_inner_handler()
+            {
+                mockInner.Setup( _ => _.DisposeAsync() ).Returns( ValueTask.CompletedTask );
+
+                await method();
+                mockInner.Verify( _ => _.DisposeAsync(), Times.Once() );
+            }
+        }
     }
 }

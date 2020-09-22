@@ -72,5 +72,19 @@ namespace Shipwright.Dataflows
             registry.For( typeof( ITransformationFactory<> ) ).DecorateAllWith( typeof( CancellationFactoryDecorator<> ) );
             return registry;
         }
+
+        /// <summary>
+        /// Adds the event inspection decorator to all implementations of <see cref="ITransformationFactory{TTransformation}"/>.
+        /// </summary>
+        /// <param name="registry">Lamar service registry.</param>
+        /// <returns>The service registry.</returns>
+
+        public static ServiceRegistry AddTransformationEventInspection( this ServiceRegistry registry )
+        {
+            if ( registry == null ) throw new ArgumentNullException( nameof( registry ) );
+
+            registry.For( typeof( ITransformationFactory<> ) ).DecorateAllWith( typeof( EventInspectionFactoryDecorator<> ) );
+            return registry;
+        }
     }
 }

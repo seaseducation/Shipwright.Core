@@ -90,8 +90,11 @@ namespace Shipwright.Dataflows
                 using var container = new Container( registry );
                 var instance = container.GetInstance<ITransformationFactory<FakeTransformation>>();
 
-                // outer decorator should be cancellation
-                var cancellation = Assert.IsType<Transformations.Internal.CancellationFactoryDecorator<FakeTransformation>>( instance );
+                // outer decorator should be event inspection
+                var inspection = Assert.IsType<Transformations.Internal.EventInspectionFactoryDecorator<FakeTransformation>>( instance );
+
+                // next decorator should be cancellation
+                var cancellation = Assert.IsType<Transformations.Internal.CancellationFactoryDecorator<FakeTransformation>>( inspection.inner );
 
                 // inner decorator should be validation
                 var validation = Assert.IsType<Transformations.Internal.ValidationFactoryDecorator<FakeTransformation>>( cancellation.inner );
