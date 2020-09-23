@@ -20,7 +20,7 @@ namespace FluentValidation
         /// <summary>
         /// Asserts that the specified property is invalid when it has the given value.
         /// </summary>
-        /// <typeparam name="TModel">Type of the partent object.</typeparam>
+        /// <typeparam name="TModel">Type of the parent object.</typeparam>
         /// <typeparam name="TValue">Type of the property.</typeparam>
         /// <param name="validator">Validator under test.</param>
         /// <param name="property">Property expression.</param>
@@ -32,7 +32,7 @@ namespace FluentValidation
         /// <summary>
         /// Asserts that the specified property is valid when it has the given value.
         /// </summary>
-        /// <typeparam name="TModel">Type of the partent object.</typeparam>
+        /// <typeparam name="TModel">Type of the parent object.</typeparam>
         /// <typeparam name="TValue">Type of the property.</typeparam>
         /// <param name="validator">Validator under test.</param>
         /// <param name="property">Property expression.</param>
@@ -44,7 +44,7 @@ namespace FluentValidation
         /// <summary>
         /// Asserts that the specified property has a child validator of the specified type.
         /// </summary>
-        /// <typeparam name="TModel">Type of the partent object.</typeparam>
+        /// <typeparam name="TModel">Type of the parent object.</typeparam>
         /// <typeparam name="TValue">Type of the property.</typeparam>
         /// <param name="validator">Validator under test.</param>
         /// <param name="property">Property expression.</param>
