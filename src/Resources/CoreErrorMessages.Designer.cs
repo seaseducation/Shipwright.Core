@@ -68,5 +68,32 @@ namespace Shipwright.Resources {
                 return ResourceManager.GetString("MissingRequiredImplementation", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &apos;{PropertyName}&apos; cannot contain null elements.
+        /// </summary>
+        public static string NoNullElementsValidationMessage {
+            get {
+                return ResourceManager.GetString("NoNullElementsValidationMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &apos;{PropertyName}&apos; cannot be empty nor contain only whitespace.
+        /// </summary>
+        public static string NotWhiteSpaceValidationMessage {
+            get {
+                return ResourceManager.GetString("NotWhiteSpaceValidationMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &apos;{PropertyName}&apos; cannot contain whitespace elements.
+        /// </summary>
+        public static string NoWhiteSpaceElementsValidationMessage {
+            get {
+                return ResourceManager.GetString("NoWhiteSpaceElementsValidationMessage", resourceCulture);
+            }
+        }
     }
 }

@@ -21,19 +21,22 @@ namespace Shipwright.Dataflows.Sources
         /// The source argument will be non-null.
         /// </summary>
         /// <param name="source">Dataflow record source definition.</param>
-        /// <param name="comparer">String comparer for field names.</param>
+        /// <param name="dataflow">Dataflow in which the source is read.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>An awaitable stream of dataflow records.</returns>
 
-        protected abstract IAsyncEnumerable<Record> Read( TSource source, StringComparer comparer, CancellationToken cancellationToken );
+        protected abstract IAsyncEnumerable<Record> Read( TSource source, Dataflow dataflow, CancellationToken cancellationToken );
 
         /// <summary>
         /// Explicit implementation of <see cref="ISourceHandler{TSource}"/>.
         /// </summary>
 
-        IAsyncEnumerable<Record> ISourceHandler<TSource>.Read( TSource source, StringComparer comparer, CancellationToken cancellationToken )
+        IAsyncEnumerable<Record> ISourceHandler<TSource>.Read( TSource source, Dataflow dataflow, CancellationToken cancellationToken )
         {
-            return source == null ? throw new ArgumentNullException( nameof( source ) ) : Read( source, comparer, cancellationToken );
+            if ( source == null ) throw new ArgumentNullException( nameof( source ) );
+            if ( dataflow == null ) throw new ArgumentNullException( nameof( dataflow ) );
+
+            return Read( source, dataflow, cancellationToken );
         }
     }
 }

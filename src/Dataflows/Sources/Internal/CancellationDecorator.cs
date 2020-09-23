@@ -33,15 +33,15 @@ namespace Shipwright.Dataflows.Sources.Internal
         /// Throws an exception if cancellation has been requested.
         /// </summary>
         /// <param name="source">Dataflow record source.</param>
-        /// <param name="comparer">String comparer for record field names.</param>
+        /// <param name="dataflow">Dataflow in which the source is read.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>An awaitable stream of records.</returns>
 
-        protected override async IAsyncEnumerable<Record> Read( TSource source, StringComparer comparer, [EnumeratorCancellation] CancellationToken cancellationToken )
+        protected override async IAsyncEnumerable<Record> Read( TSource source, Dataflow dataflow, [EnumeratorCancellation] CancellationToken cancellationToken )
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            await foreach ( var record in inner.Read( source, comparer, cancellationToken ) )
+            await foreach ( var record in inner.Read( source, dataflow, cancellationToken ) )
             {
                 yield return record;
                 cancellationToken.ThrowIfCancellationRequested();

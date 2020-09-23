@@ -35,6 +35,12 @@ namespace Shipwright.Dataflows
         public IReadOnlyDictionary<string, object> Origin { get; private set; }
 
         /// <summary>
+        /// Dataflow in which the record is processed.
+        /// </summary>
+
+        public Dataflow Dataflow { get; init; }
+
+        /// <summary>
         /// Source from which the record was read.
         /// </summary>
 
@@ -43,16 +49,17 @@ namespace Shipwright.Dataflows
         /// <summary>
         /// Constructs an instance to represent the given data within a dataflow.
         /// </summary>
+        /// <param name="dataflow">Dataflow in which the record is processed.</param>
         /// <param name="source">Source from which the record was read.</param>
         /// <param name="data">Current values of the data in the record.</param>
         /// <param name="position">Ordinal position of the record within the dataflow.</param>
-        /// <param name="comparer">Comparer for record field name.</param>
 
-        public Record( Source source, IDictionary<string, object> data, long position, StringComparer comparer )
+        public Record( Dataflow dataflow, Source source, IDictionary<string, object> data, long position )
         {
+            Dataflow = dataflow ?? throw new ArgumentNullException( nameof( dataflow ) );
             Source = source ?? throw new ArgumentNullException( nameof( source ) );
-            Data = data == null ? throw new ArgumentNullException( nameof( data ) ) : new Dictionary<string, object>( data, comparer );
-            Origin = data.ToImmutableDictionary( comparer );
+            Data = data == null ? throw new ArgumentNullException( nameof( data ) ) : new Dictionary<string, object>( data, dataflow.FieldNameComparer );
+            Origin = data.ToImmutableDictionary( dataflow.FieldNameComparer );
             Position = position;
         }
     }
