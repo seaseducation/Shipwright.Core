@@ -34,7 +34,7 @@ namespace Shipwright.Core.Example
             public int Buzz { get; init; }
             public int FizzBuzz { get; init; }
 
-            public async ValueTask DisposeAsync() {}
+            public async ValueTask DisposeAsync() { }
 
             public async Task Transform( Record record, CancellationToken cancellationToken )
             {

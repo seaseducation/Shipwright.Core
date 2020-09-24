@@ -32,5 +32,5 @@ namespace Shipwright.Commands
     /// </summary>
     /// <typeparam name="TCommand">Type of the command.</typeparam>
 
-    public interface ICommandHandler<TCommand> : ICommandHandler<TCommand,ValueTuple> where TCommand: Command<ValueTuple> {}
+    public interface ICommandHandler<TCommand> : ICommandHandler<TCommand, ValueTuple> where TCommand : Command<ValueTuple> { }
 }

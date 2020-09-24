@@ -47,10 +47,12 @@ namespace Shipwright.Core.Example
                     registry.AddHostedService<Program>();
                 } );
 
+        private readonly IHostApplicationLifetime lifetime;
         private readonly ICommandDispatcher dispatcher;
 
-        public Program( ICommandDispatcher dispatcher )
+        public Program( IHostApplicationLifetime lifetime, ICommandDispatcher dispatcher )
         {
+            this.lifetime = lifetime ?? throw new ArgumentNullException( nameof( lifetime ) );
             this.dispatcher = dispatcher ?? throw new ArgumentNullException( nameof( dispatcher ) );
         }
 
@@ -71,7 +73,15 @@ namespace Shipwright.Core.Example
                 },
             };
 
-            await dispatcher.Execute( dataflow, stoppingToken );
+            try
+            {
+                await dispatcher.Execute( dataflow, stoppingToken );
+            }
+
+            finally
+            {
+                lifetime.StopApplication();
+            }
         }
     }
 }
