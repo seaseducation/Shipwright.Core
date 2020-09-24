@@ -47,9 +47,9 @@ namespace Shipwright.Commands
             private IAssemblyScanner scanner;
             private IAssemblyScanner method() => scanner.AddCommandHandlers();
 
-            public class FakeCommandHandler : CommandHandler<FakeGuidCommand, Guid>
+            public class FakeCommandHandler : ICommandHandler<FakeGuidCommand, Guid>
             {
-                protected override Task<Guid> OnExecute( FakeGuidCommand command, CancellationToken cancellationToken ) =>
+                public Task<Guid> Execute( FakeGuidCommand command, CancellationToken cancellationToken ) =>
                     throw new NotImplementedException();
             }
 

@@ -27,7 +27,7 @@ namespace Shipwright.Dataflows.Transformations
         protected abstract Task<ITransformationHandler> OnCreate( TTransformation transformation, CancellationToken cancellationToken );
 
         /// <summary>
-        /// Explicit implementation of <see cref="ITransformationFactory{TTransformation}"/>.
+        /// Implementation of <see cref="ITransformationFactory{TTransformation}"/>.
         /// </summary>
 
         public async Task<ITransformationHandler> Create( TTransformation transformation, CancellationToken cancellationToken )

@@ -28,7 +28,7 @@ namespace Shipwright.Dataflows.Sources
         protected abstract IAsyncEnumerable<Record> OnRead( TSource source, Dataflow dataflow, CancellationToken cancellationToken );
 
         /// <summary>
-        /// Explicit implementation of <see cref="ISourceHandler{TSource}"/>.
+        /// Implementation of <see cref="ISourceHandler{TSource}"/>.
         /// </summary>
 
         public IAsyncEnumerable<Record> Read( TSource source, Dataflow dataflow, CancellationToken cancellationToken )

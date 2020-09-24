@@ -16,7 +16,7 @@ namespace Shipwright.Commands.Internal
     /// <typeparam name="TCommand">Type of the command.</typeparam>
     /// <typeparam name="TResult">Type of the command result.</typeparam>
 
-    public class ValidationDecorator<TCommand, TResult> : CommandHandler<TCommand, TResult> where TCommand : Command<TResult>
+    public class ValidationDecorator<TCommand, TResult> : ICommandHandler<TCommand, TResult> where TCommand : Command<TResult>
     {
         internal readonly ICommandHandler<TCommand, TResult> inner;
         internal readonly IValidationAdapter<TCommand> validator;
@@ -41,8 +41,10 @@ namespace Shipwright.Commands.Internal
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The result of command execution.</returns>
 
-        protected override async Task<TResult> OnExecute( TCommand command, CancellationToken cancellationToken )
+        public async Task<TResult> Execute( TCommand command, CancellationToken cancellationToken )
         {
+            if ( command == null ) throw new ArgumentNullException( nameof( command ) );
+
             await validator.ValidateAndThrow( command, cancellationToken );
             return await inner.Execute( command, cancellationToken );
         }
