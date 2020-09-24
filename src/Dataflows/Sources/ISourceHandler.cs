@@ -10,7 +10,6 @@ namespace Shipwright.Dataflows.Sources
 {
     /// <summary>
     /// Defines a handler for a dataflow record source.
-    /// Derive from <see cref="SourceHandler{TSource}"/> to implement a handler for a data source.
     /// </summary>
     /// <typeparam name="TSource">Type of the dataflow source.</typeparam>
 

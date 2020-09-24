@@ -48,9 +48,9 @@ namespace Shipwright.Dataflows
             private IAssemblyScanner scanner;
             private IAssemblyScanner method() => scanner.AddSourceHandlers();
 
-            public class FakeSourceHandler : SourceHandler<FakeSource>
+            public class FakeSourceHandler : ISourceHandler<FakeSource>
             {
-                protected override IAsyncEnumerable<Record> OnRead( FakeSource source, Dataflow dataflow, CancellationToken cancellationToken ) => throw new NotImplementedException();
+                public IAsyncEnumerable<Record> Read( FakeSource source, Dataflow dataflow, CancellationToken cancellationToken ) => throw new NotImplementedException();
             }
 
             [Fact]

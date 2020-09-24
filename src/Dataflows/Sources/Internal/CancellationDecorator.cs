@@ -15,7 +15,7 @@ namespace Shipwright.Dataflows.Sources.Internal
     /// </summary>
 
 
-    public class CancellationDecorator<TSource> : SourceHandler<TSource> where TSource : Source
+    public class CancellationDecorator<TSource> : ISourceHandler<TSource> where TSource : Source
     {
         internal readonly ISourceHandler<TSource> inner;
 
@@ -37,8 +37,11 @@ namespace Shipwright.Dataflows.Sources.Internal
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>An awaitable stream of records.</returns>
 
-        protected override async IAsyncEnumerable<Record> OnRead( TSource source, Dataflow dataflow, [EnumeratorCancellation] CancellationToken cancellationToken )
+        public async IAsyncEnumerable<Record> Read( TSource source, Dataflow dataflow, [EnumeratorCancellation] CancellationToken cancellationToken )
         {
+            if ( source == null ) throw new ArgumentNullException( nameof( source ) );
+            if ( dataflow == null ) throw new ArgumentNullException( nameof( dataflow ) );
+
             cancellationToken.ThrowIfCancellationRequested();
 
             await foreach ( var record in inner.Read( source, dataflow, cancellationToken ) )

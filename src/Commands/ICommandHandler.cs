@@ -11,7 +11,6 @@ namespace Shipwright.Commands
 {
     /// <summary>
     /// Defines a handler for executing a command.
-    /// Use one of the available abstract handlers to implement this interface.
     /// </summary>
     /// <typeparam name="TCommand">Type of the command.</typeparam>
     /// <typeparam name="TResult">Type of the command result.</typeparam>
