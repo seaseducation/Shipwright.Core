@@ -49,8 +49,10 @@ namespace Shipwright.Dataflows.Transformations
             /// <param name="record">Dataflow record to transform.</param>
             /// <param name="cancellationToken">Cancellation token.</param>
 
-            protected override async Task Transform( Record record, CancellationToken cancellationToken )
+            public override async Task Transform( Record record, CancellationToken cancellationToken )
             {
+                if ( record == null ) throw new ArgumentNullException( nameof( record ) );
+
                 foreach ( var handler in handlers )
                 {
                     await handler.Transform( record, cancellationToken );

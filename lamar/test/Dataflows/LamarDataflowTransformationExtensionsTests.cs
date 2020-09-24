@@ -48,9 +48,9 @@ namespace Shipwright.Dataflows
             private IAssemblyScanner scanner;
             private IAssemblyScanner method() => scanner.AddTransformationFactories();
 
-            public class FakeTransformationFactory : TransformationFactory<FakeTransformation>
+            public class FakeTransformationFactory : ITransformationFactory<FakeTransformation>
             {
-                protected override Task<ITransformationHandler> OnCreate( FakeTransformation transformation, CancellationToken cancellationToken ) =>
+                public Task<ITransformationHandler> Create( FakeTransformation transformation, CancellationToken cancellationToken ) =>
                     throw new NotImplementedException();
             }
 

@@ -30,8 +30,10 @@ namespace Shipwright.Dataflows.Transformations.Internal
         /// Inspects a record's events and skips processing when a fatal event is found.
         /// </summary>
 
-        protected override async Task Transform( Record record, CancellationToken cancellationToken )
+        public override async Task Transform( Record record, CancellationToken cancellationToken )
         {
+            if ( record == null ) throw new ArgumentNullException( nameof( record ) );
+
             foreach ( var @event in record.Events )
             {
                 if ( @event.IsFatal )

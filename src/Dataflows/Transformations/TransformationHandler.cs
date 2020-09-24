@@ -44,23 +44,10 @@ namespace Shipwright.Dataflows.Transformations
 
         /// <summary>
         /// Executes the transformation against the given dataflow record.
-        /// All implementations of this method must be thread-safe.
-        /// Record will always be non-null.
         /// </summary>
         /// <param name="record">Record to transform.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
 
-        protected abstract Task Transform( Record record, CancellationToken cancellationToken );
-
-        /// <summary>
-        /// Explicit implementation of <see cref="ITransformationHandler"/>.
-        /// </summary>
-
-        async Task ITransformationHandler.Transform( Record record, CancellationToken cancellationToken )
-        {
-            if ( record == null ) throw new ArgumentNullException( nameof( record ) );
-
-            await Transform( record, cancellationToken );
-        }
+        public abstract Task Transform( Record record, CancellationToken cancellationToken );
     }
 }
