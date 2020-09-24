@@ -35,7 +35,7 @@ namespace Shipwright.Dataflows.Sources
             /// Reads data from the underlying data sources.
             /// </summary>
 
-            protected override async IAsyncEnumerable<Record> Read( AggregateSource source, Dataflow dataflow, [EnumeratorCancellation] CancellationToken cancellationToken )
+            protected override async IAsyncEnumerable<Record> OnRead( AggregateSource source, Dataflow dataflow, [EnumeratorCancellation] CancellationToken cancellationToken )
             {
                 var sources = source.Sources.ToArray();
 

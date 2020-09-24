@@ -25,7 +25,7 @@ namespace Shipwright.Commands
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The result of the command's execution.</returns>
 
-        protected abstract Task<TResult> Execute( TCommand command, CancellationToken cancellationToken );
+        protected abstract Task<TResult> OnExecute( TCommand command, CancellationToken cancellationToken );
 
         /// <summary>
         /// Explicit interface definition.
@@ -35,9 +35,9 @@ namespace Shipwright.Commands
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The result of the command's execution.</returns>
 
-        async Task<TResult> ICommandHandler<TCommand, TResult>.Execute( TCommand command, CancellationToken cancellationToken )
+        public async Task<TResult> Execute( TCommand command, CancellationToken cancellationToken )
         {
-            return command == null ? throw new ArgumentNullException( nameof( command ) ) : await Execute( command, cancellationToken );
+            return command == null ? throw new ArgumentNullException( nameof( command ) ) : await OnExecute( command, cancellationToken );
         }
     }
 
@@ -55,7 +55,7 @@ namespace Shipwright.Commands
         /// <param name="command">Command to execute.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
 
-        protected abstract Task Execute( TCommand command, CancellationToken cancellationToken );
+        protected abstract Task OnExecute( TCommand command, CancellationToken cancellationToken );
 
         /// <summary>
         /// Explicit interface definition.
@@ -65,11 +65,11 @@ namespace Shipwright.Commands
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>A unit type that represents no result.</returns>
 
-        async Task<ValueTuple> ICommandHandler<TCommand, ValueTuple>.Execute( TCommand command, CancellationToken cancellationToken )
+        public async Task<ValueTuple> Execute( TCommand command, CancellationToken cancellationToken )
         {
             if ( command == null ) throw new ArgumentNullException( nameof( command ) );
 
-            await Execute( command, cancellationToken );
+            await OnExecute( command, cancellationToken );
             return default;
         }
     }

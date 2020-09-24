@@ -41,7 +41,7 @@ namespace Shipwright.Dataflows.Sources.Internal
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>An awaitable stream of records.</returns>
 
-        protected override async IAsyncEnumerable<Record> Read( TSource source, Dataflow dataflow, [EnumeratorCancellation] CancellationToken cancellationToken )
+        protected override async IAsyncEnumerable<Record> OnRead( TSource source, Dataflow dataflow, [EnumeratorCancellation] CancellationToken cancellationToken )
         {
             await validator.ValidateAndThrow( source, cancellationToken );
 

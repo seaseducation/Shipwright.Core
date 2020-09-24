@@ -71,7 +71,7 @@ namespace Shipwright.Dataflows
             /// <param name="command">Dataflow to execute.</param>
             /// <param name="cancellationToken">Cancellation token.</param>
 
-            protected override async Task Execute( Dataflow command, CancellationToken cancellationToken )
+            protected override async Task OnExecute( Dataflow command, CancellationToken cancellationToken )
             {
                 // build the transformation handler(s)
                 var source = new AggregateSource { Sources = command.Sources };

@@ -36,7 +36,7 @@ namespace Shipwright.Dataflows.Transformations.Internal
         /// <exception cref="OperationCanceledException">Thrown when cancellation is requested.</exception>
         /// <returns>A decorated handler for the transformation.</returns>
 
-        protected override async Task<ITransformationHandler> Create( TTransformation transformation, CancellationToken cancellationToken )
+        protected override async Task<ITransformationHandler> OnCreate( TTransformation transformation, CancellationToken cancellationToken )
         {
             cancellationToken.ThrowIfCancellationRequested();
             return new CancellationHandlerDecorator( await inner.Create( transformation, cancellationToken ) );

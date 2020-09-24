@@ -25,18 +25,18 @@ namespace Shipwright.Dataflows.Sources
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>An awaitable stream of dataflow records.</returns>
 
-        protected abstract IAsyncEnumerable<Record> Read( TSource source, Dataflow dataflow, CancellationToken cancellationToken );
+        protected abstract IAsyncEnumerable<Record> OnRead( TSource source, Dataflow dataflow, CancellationToken cancellationToken );
 
         /// <summary>
         /// Explicit implementation of <see cref="ISourceHandler{TSource}"/>.
         /// </summary>
 
-        IAsyncEnumerable<Record> ISourceHandler<TSource>.Read( TSource source, Dataflow dataflow, CancellationToken cancellationToken )
+        public IAsyncEnumerable<Record> Read( TSource source, Dataflow dataflow, CancellationToken cancellationToken )
         {
             if ( source == null ) throw new ArgumentNullException( nameof( source ) );
             if ( dataflow == null ) throw new ArgumentNullException( nameof( dataflow ) );
 
-            return Read( source, dataflow, cancellationToken );
+            return OnRead( source, dataflow, cancellationToken );
         }
     }
 }

@@ -49,7 +49,7 @@ namespace Shipwright.Commands
 
             public class FakeCommandHandler : CommandHandler<FakeGuidCommand, Guid>
             {
-                protected override Task<Guid> Execute( FakeGuidCommand command, CancellationToken cancellationToken ) =>
+                protected override Task<Guid> OnExecute( FakeGuidCommand command, CancellationToken cancellationToken ) =>
                     throw new NotImplementedException();
             }
 

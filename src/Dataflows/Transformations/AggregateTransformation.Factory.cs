@@ -34,7 +34,7 @@ namespace Shipwright.Dataflows.Transformations
             /// Creates an aggregate transformation handler.
             /// </summary>
 
-            protected override async Task<ITransformationHandler> Create( AggregateTransformation transformation, CancellationToken cancellationToken )
+            protected override async Task<ITransformationHandler> OnCreate( AggregateTransformation transformation, CancellationToken cancellationToken )
             {
                 var handlers = new List<ITransformationHandler>();
                 var success = false;

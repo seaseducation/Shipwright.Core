@@ -50,7 +50,7 @@ namespace Shipwright.Dataflows
 
             public class FakeTransformationFactory : TransformationFactory<FakeTransformation>
             {
-                protected override Task<ITransformationHandler> Create( FakeTransformation transformation, CancellationToken cancellationToken ) =>
+                protected override Task<ITransformationHandler> OnCreate( FakeTransformation transformation, CancellationToken cancellationToken ) =>
                     throw new NotImplementedException();
             }
 

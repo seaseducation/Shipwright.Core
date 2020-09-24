@@ -50,7 +50,7 @@ namespace Shipwright.Dataflows
 
             public class FakeSourceHandler : SourceHandler<FakeSource>
             {
-                protected override IAsyncEnumerable<Record> Read( FakeSource source, Dataflow dataflow, CancellationToken cancellationToken ) => throw new NotImplementedException();
+                protected override IAsyncEnumerable<Record> OnRead( FakeSource source, Dataflow dataflow, CancellationToken cancellationToken ) => throw new NotImplementedException();
             }
 
             [Fact]

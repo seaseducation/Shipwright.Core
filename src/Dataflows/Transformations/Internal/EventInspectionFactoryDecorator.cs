@@ -32,7 +32,7 @@ namespace Shipwright.Dataflows.Transformations.Internal
         /// Adds a decorator to the created handler.
         /// </summary>
 
-        protected override async Task<ITransformationHandler> Create( TTransformation transformation, CancellationToken cancellationToken )
+        protected override async Task<ITransformationHandler> OnCreate( TTransformation transformation, CancellationToken cancellationToken )
         {
             return new EventInspectionHandlerDecorator( await inner.Create( transformation, cancellationToken ) );
         }

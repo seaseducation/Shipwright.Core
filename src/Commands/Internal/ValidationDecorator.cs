@@ -41,7 +41,7 @@ namespace Shipwright.Commands.Internal
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The result of command execution.</returns>
 
-        protected override async Task<TResult> Execute( TCommand command, CancellationToken cancellationToken )
+        protected override async Task<TResult> OnExecute( TCommand command, CancellationToken cancellationToken )
         {
             await validator.ValidateAndThrow( command, cancellationToken );
             return await inner.Execute( command, cancellationToken );

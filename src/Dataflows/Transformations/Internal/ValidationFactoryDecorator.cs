@@ -40,7 +40,7 @@ namespace Shipwright.Dataflows.Transformations.Internal
         /// <returns>The handler for the transformation.</returns>
         /// <exception cref="FluentValidation.ValidationException"/>
 
-        protected override async Task<ITransformationHandler> Create( TTransformation transformation, CancellationToken cancellationToken )
+        protected override async Task<ITransformationHandler> OnCreate( TTransformation transformation, CancellationToken cancellationToken )
         {
             await validator.ValidateAndThrow( transformation, cancellationToken );
             return await inner.Create( transformation, cancellationToken );

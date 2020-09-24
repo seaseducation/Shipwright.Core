@@ -24,17 +24,17 @@ namespace Shipwright.Dataflows.Transformations
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The created handler.</returns>
 
-        protected abstract Task<ITransformationHandler> Create( TTransformation transformation, CancellationToken cancellationToken );
+        protected abstract Task<ITransformationHandler> OnCreate( TTransformation transformation, CancellationToken cancellationToken );
 
         /// <summary>
         /// Explicit implementation of <see cref="ITransformationFactory{TTransformation}"/>.
         /// </summary>
 
-        async Task<ITransformationHandler> ITransformationFactory<TTransformation>.Create( TTransformation transformation, CancellationToken cancellationToken )
+        public async Task<ITransformationHandler> Create( TTransformation transformation, CancellationToken cancellationToken )
         {
             return transformation == null
                 ? throw new ArgumentNullException( nameof( transformation ) )
-                : await Create( transformation, cancellationToken );
+                : await OnCreate( transformation, cancellationToken );
         }
     }
 }
