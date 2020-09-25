@@ -47,6 +47,12 @@ namespace Shipwright.Dataflows
         public Source Source { get; init; }
 
         /// <summary>
+        /// Collection of events encountered during record processing.
+        /// </summary>
+
+        public ICollection<LogEvent> Events { get; } = new List<LogEvent>();
+
+        /// <summary>
         /// Constructs an instance to represent the given data within a dataflow.
         /// </summary>
         /// <param name="dataflow">Dataflow in which the record is processed.</param>

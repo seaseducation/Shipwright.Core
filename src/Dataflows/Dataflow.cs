@@ -3,6 +3,7 @@
 // Licensed under the Apache License, Version 2.0
 // See https://opensource.org/licenses/Apache-2.0 or the LICENSE file in the repository root for the full text of the license.
 
+using Microsoft.Extensions.Logging;
 using Shipwright.Commands;
 using Shipwright.Dataflows.Sources;
 using Shipwright.Dataflows.Transformations;
@@ -58,5 +59,11 @@ namespace Shipwright.Dataflows
         /// </summary>
 
         public int MaxDegreeOfParallelism { get; init; } = DataflowBlockOptions.Unbounded;
+
+        /// <summary>
+        /// Log level that can be used by notification receivers for logging logic.
+        /// </summary>
+
+        public LogLevel LogLevel { get; init; }
     }
 }

@@ -28,7 +28,8 @@ namespace Shipwright
             .AddSourceCancellation()
             .AddTransformationDispatch()
             .AddTransformationValidation()
-            .AddTransformationCancellation();
+            .AddTransformationCancellation()
+            .AddTransformationEventInspection();
 
         /// <summary>
         /// Adds all scanned implementations of dataflow components.
