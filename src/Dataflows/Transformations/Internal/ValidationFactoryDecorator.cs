@@ -15,7 +15,7 @@ namespace Shipwright.Dataflows.Transformations.Internal
     /// </summary>
     /// <typeparam name="TTransformation">Type of the transformation.</typeparam>
 
-    public class ValidationFactoryDecorator<TTransformation> : TransformationFactory<TTransformation> where TTransformation : Transformation
+    public class ValidationFactoryDecorator<TTransformation> : ITransformationFactory<TTransformation> where TTransformation : Transformation
     {
         internal readonly ITransformationFactory<TTransformation> inner;
         internal readonly IValidationAdapter<TTransformation> validator;
@@ -40,8 +40,10 @@ namespace Shipwright.Dataflows.Transformations.Internal
         /// <returns>The handler for the transformation.</returns>
         /// <exception cref="FluentValidation.ValidationException"/>
 
-        protected override async Task<ITransformationHandler> Create( TTransformation transformation, CancellationToken cancellationToken )
+        public async Task<ITransformationHandler> Create( TTransformation transformation, CancellationToken cancellationToken )
         {
+            if ( transformation == null ) throw new ArgumentNullException( nameof( transformation ) );
+
             await validator.ValidateAndThrow( transformation, cancellationToken );
             return await inner.Create( transformation, cancellationToken );
         }

@@ -40,8 +40,10 @@ namespace Shipwright.Dataflows.Transformations.Internal
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <exception cref="OperationCanceledException">Thrown when cancellation has been requested.</exception>
 
-        protected override async Task Transform( Record record, CancellationToken cancellationToken )
+        public override async Task Transform( Record record, CancellationToken cancellationToken )
         {
+            if ( record == null ) throw new ArgumentNullException( nameof( record ) );
+
             cancellationToken.ThrowIfCancellationRequested();
             await inner.Transform( record, cancellationToken );
         }

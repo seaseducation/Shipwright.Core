@@ -16,7 +16,7 @@ namespace Shipwright.Dataflows.Sources.Internal
     /// </summary>
     /// <typeparam name="TSource">Type of the dataflow record source.</typeparam>
 
-    public class ValidationDecorator<TSource> : SourceHandler<TSource> where TSource : Source
+    public class ValidationDecorator<TSource> : ISourceHandler<TSource> where TSource : Source
     {
         internal readonly ISourceHandler<TSource> inner;
         internal readonly IValidationAdapter<TSource> validator;
@@ -41,8 +41,11 @@ namespace Shipwright.Dataflows.Sources.Internal
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>An awaitable stream of records.</returns>
 
-        protected override async IAsyncEnumerable<Record> Read( TSource source, Dataflow dataflow, [EnumeratorCancellation] CancellationToken cancellationToken )
+        public async IAsyncEnumerable<Record> Read( TSource source, Dataflow dataflow, [EnumeratorCancellation] CancellationToken cancellationToken )
         {
+            if ( source == null ) throw new ArgumentNullException( nameof( source ) );
+            if ( dataflow == null ) throw new ArgumentNullException( nameof( dataflow ) );
+
             await validator.ValidateAndThrow( source, cancellationToken );
 
             await foreach ( var record in inner.Read( source, dataflow, cancellationToken ) )

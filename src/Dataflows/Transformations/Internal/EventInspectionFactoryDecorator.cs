@@ -14,7 +14,7 @@ namespace Shipwright.Dataflows.Transformations.Internal
     /// </summary>
     /// <typeparam name="TTransformation">Type of the transformation.</typeparam>
 
-    public class EventInspectionFactoryDecorator<TTransformation> : TransformationFactory<TTransformation> where TTransformation : Transformation
+    public class EventInspectionFactoryDecorator<TTransformation> : ITransformationFactory<TTransformation> where TTransformation : Transformation
     {
         internal readonly ITransformationFactory<TTransformation> inner;
 
@@ -32,8 +32,10 @@ namespace Shipwright.Dataflows.Transformations.Internal
         /// Adds a decorator to the created handler.
         /// </summary>
 
-        protected override async Task<ITransformationHandler> Create( TTransformation transformation, CancellationToken cancellationToken )
+        public async Task<ITransformationHandler> Create( TTransformation transformation, CancellationToken cancellationToken )
         {
+            if ( transformation == null ) throw new ArgumentNullException( nameof( transformation ) );
+
             return new EventInspectionHandlerDecorator( await inner.Create( transformation, cancellationToken ) );
         }
     }

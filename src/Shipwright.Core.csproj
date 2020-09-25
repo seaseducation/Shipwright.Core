@@ -7,7 +7,7 @@
     <Nullable>enable</Nullable>
 
     <!-- NuGet package info -->
-    <Version>1.0.0-preview.0</Version>
+    <Version>1.0.0-rc1</Version>
     <PackageId>Shipwright.Core</PackageId>
     <Authors>TTCO Holding Company Inc. and Contributors</Authors>
     <Copyright>Copyright 2020 TTCO Holding Company Inc. and Contributors</Copyright>
@@ -37,7 +37,7 @@
 
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="9.2.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.8" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0-rc.1.20451.14" />
   </ItemGroup>
 
   <ItemGroup>

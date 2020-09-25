@@ -14,7 +14,7 @@ namespace Shipwright.Dataflows.Transformations.Internal
     /// </summary>
     /// <typeparam name="TTransformation">Type of the transformation to decorate.</typeparam>
 
-    public class CancellationFactoryDecorator<TTransformation> : TransformationFactory<TTransformation> where TTransformation : Transformation
+    public class CancellationFactoryDecorator<TTransformation> : ITransformationFactory<TTransformation> where TTransformation : Transformation
     {
         internal readonly ITransformationFactory<TTransformation> inner;
 
@@ -36,8 +36,10 @@ namespace Shipwright.Dataflows.Transformations.Internal
         /// <exception cref="OperationCanceledException">Thrown when cancellation is requested.</exception>
         /// <returns>A decorated handler for the transformation.</returns>
 
-        protected override async Task<ITransformationHandler> Create( TTransformation transformation, CancellationToken cancellationToken )
+        public async Task<ITransformationHandler> Create( TTransformation transformation, CancellationToken cancellationToken )
         {
+            if ( transformation == null ) throw new ArgumentNullException( nameof( transformation ) );
+
             cancellationToken.ThrowIfCancellationRequested();
             return new CancellationHandlerDecorator( await inner.Create( transformation, cancellationToken ) );
         }

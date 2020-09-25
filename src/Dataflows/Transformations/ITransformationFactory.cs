@@ -10,7 +10,6 @@ namespace Shipwright.Dataflows.Transformations
 {
     /// <summary>
     /// Defines a factory for creating a transformation handler.
-    /// Derive from <see cref="TransformationFactory{TTransformation}"/> to implement this interface.
     /// </summary>
     /// <typeparam name="TTransformation">Type of the transformation whose handler to build.</typeparam>
 

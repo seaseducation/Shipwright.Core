@@ -16,7 +16,7 @@ namespace Shipwright.Dataflows.Transformations
         /// Factory for creating handlers of <see cref="AggregateTransformation"/>.
         /// </summary>
 
-        public class Factory : TransformationFactory<AggregateTransformation>
+        public class Factory : ITransformationFactory<AggregateTransformation>
         {
             private readonly ITransformationDispatcher dispatcher;
 
@@ -34,8 +34,10 @@ namespace Shipwright.Dataflows.Transformations
             /// Creates an aggregate transformation handler.
             /// </summary>
 
-            protected override async Task<ITransformationHandler> Create( AggregateTransformation transformation, CancellationToken cancellationToken )
+            public async Task<ITransformationHandler> Create( AggregateTransformation transformation, CancellationToken cancellationToken )
             {
+                if ( transformation == null ) throw new ArgumentNullException( nameof( transformation ) );
+
                 var handlers = new List<ITransformationHandler>();
                 var success = false;
 

@@ -17,7 +17,7 @@ namespace Shipwright.Dataflows.Sources
         /// Handler for <see cref="AggregateSource"/>.
         /// </summary>
 
-        public class Handler : SourceHandler<AggregateSource>
+        public class Handler : ISourceHandler<AggregateSource>
         {
             private readonly ISourceDispatcher sourceDispatcher;
 
@@ -35,8 +35,11 @@ namespace Shipwright.Dataflows.Sources
             /// Reads data from the underlying data sources.
             /// </summary>
 
-            protected override async IAsyncEnumerable<Record> Read( AggregateSource source, Dataflow dataflow, [EnumeratorCancellation] CancellationToken cancellationToken )
+            public async IAsyncEnumerable<Record> Read( AggregateSource source, Dataflow dataflow, [EnumeratorCancellation] CancellationToken cancellationToken )
             {
+                if ( source == null ) throw new ArgumentNullException( nameof( source ) );
+                if ( dataflow == null ) throw new ArgumentNullException( nameof( dataflow ) );
+
                 var sources = source.Sources.ToArray();
 
                 foreach ( var child in sources )

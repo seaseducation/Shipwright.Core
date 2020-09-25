@@ -21,7 +21,7 @@ namespace Shipwright.Dataflows
         /// Handler for executing dataflow commands.
         /// </summary>
 
-        public class Handler : CommandHandler<Dataflow>
+        public class Handler : ICommandHandler<Dataflow>
         {
             private readonly ISourceDispatcher sourceDispatcher;
             private readonly ITransformationDispatcher transformationDispatcher;
@@ -71,8 +71,10 @@ namespace Shipwright.Dataflows
             /// <param name="command">Dataflow to execute.</param>
             /// <param name="cancellationToken">Cancellation token.</param>
 
-            protected override async Task Execute( Dataflow command, CancellationToken cancellationToken )
+            public async Task<ValueTuple> Execute( Dataflow command, CancellationToken cancellationToken )
             {
+                if ( command == null ) throw new ArgumentNullException( nameof( command ) );
+
                 // build the transformation handler(s)
                 var source = new AggregateSource { Sources = command.Sources };
                 var transformation = new AggregateTransformation { Transformations = command.Transformations };
@@ -105,6 +107,8 @@ namespace Shipwright.Dataflows
                 await action.Completion;
 
                 await NotifyDataflowCompleted( command, cancellationToken );
+
+                return default;
             }
         }
     }
