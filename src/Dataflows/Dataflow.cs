@@ -58,5 +58,11 @@ namespace Shipwright.Dataflows
         /// </summary>
 
         public int MaxDegreeOfParallelism { get; init; } = DataflowBlockOptions.Unbounded;
+
+        /// <summary>
+        /// Collection of events encountered during dataflow processing.
+        /// </summary>
+
+        public ICollection<LogEvent> Events { get; } = new List<LogEvent>();
     }
 }
