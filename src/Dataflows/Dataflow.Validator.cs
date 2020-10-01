@@ -11,13 +11,14 @@ namespace Shipwright.Dataflows
     public partial record Dataflow
     {
         /// <summary>
-        /// Validator for dataflow commands.
+        /// Defines a validator for commands that derive from <see cref="Dataflow"/>.
         /// </summary>
+        /// <typeparam name="TDataflow">Derived type.</typeparam>
 
-        public class Validator : AbstractValidator<Dataflow>
+        public abstract class Validator<TDataflow> : AbstractValidator<TDataflow> where TDataflow : Dataflow
         {
             /// <summary>
-            /// Validator for dataflow commands.
+            /// Rules for all dataflow commands.
             /// </summary>
 
             public Validator()
@@ -29,5 +30,11 @@ namespace Shipwright.Dataflows
                 RuleFor( _ => _.MaxDegreeOfParallelism ).GreaterThan( 0 ).When( _ => _.MaxDegreeOfParallelism != DataflowBlockOptions.Unbounded );
             }
         }
+
+        /// <summary>
+        /// Validator for the stock dataflow command.
+        /// </summary>
+
+        public class Validator : Validator<Dataflow> { }
     }
 }
