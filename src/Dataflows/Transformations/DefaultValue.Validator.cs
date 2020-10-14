@@ -10,13 +10,13 @@ namespace Shipwright.Dataflows.Transformations
     public partial record DefaultValue
     {
         /// <summary>
-        /// Validator for the default value transformation.
+        /// Validator for the <see cref="DefaultValue"/> transformation.
         /// </summary>
 
         public class Validator : AbstractValidator<DefaultValue>
         {
             /// <summary>
-            /// Validator for the default value transformation.
+            /// Validator for the <see cref="DefaultValue"/> transformation.
             /// </summary>
 
             public Validator()

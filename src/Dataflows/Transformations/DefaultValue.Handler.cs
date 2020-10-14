@@ -12,7 +12,7 @@ namespace Shipwright.Dataflows.Transformations
     public partial record DefaultValue
     {
         /// <summary>
-        /// Handler for the default value transformation.
+        /// Handler for the <see cref="DefaultValue"/> transformation.
         /// </summary>
 
         public class Handler : TransformationHandler
@@ -20,7 +20,7 @@ namespace Shipwright.Dataflows.Transformations
             internal readonly DefaultValue transformation;
 
             /// <summary>
-            /// Constructs a handler for the default value transformation.
+            /// Constructs a handler for the <see cref="DefaultValue"/> transformation.
             /// </summary>
             /// <param name="transformation">Transformation settings.</param>
 
