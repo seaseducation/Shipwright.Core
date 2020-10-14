@@ -61,6 +61,15 @@ namespace Shipwright.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Required value is missing from the field [{0}].
+        /// </summary>
+        public static string MissingRequiredFieldValue {
+            get {
+                return ResourceManager.GetString("MissingRequiredFieldValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unable to find a required implementation of the type {0}.
         /// </summary>
         public static string MissingRequiredImplementation {
