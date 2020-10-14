@@ -41,5 +41,33 @@ namespace Shipwright
             .AddSourceHandlers()
             .AddTransformationFactories()
             .AddDataflowNotifications();
+
+        /// <summary>
+        /// Registers all Shipwright components.
+        /// </summary>
+        /// <param name="registry">Lamar service registry.</param>
+        /// <returns>The service registry.</returns>
+
+        public static ServiceRegistry AddAllShipwright( this ServiceRegistry registry ) => (registry ?? throw new ArgumentNullException( nameof( registry ) ))
+            .AddValidationAdapter()
+            .AddCommandDispatch()
+            .AddCommandValidation()
+            .AddCommandCancellation()
+            .AddDbConnectionDispatch()
+            .AddDbConnectionValidation()
+            .AddDbConnectionCancellation()
+            .AddDataflow();
+
+        /// <summary>
+        /// Adds all scanned Shipwright components.
+        /// </summary>
+        /// <param name="scanner">Lamar assembly scanner.</param>
+        /// <returns>The assembly scanner.</returns>
+
+        public static IAssemblyScanner AddAllShipwrightImplementations( this IAssemblyScanner scanner ) => (scanner ?? throw new ArgumentNullException( nameof( scanner ) ))
+            .AddValidators()
+            .AddCommandHandlers()
+            .AddDbConnectionBuilders()
+            .AddDataflowImplementations();
     }
 }
