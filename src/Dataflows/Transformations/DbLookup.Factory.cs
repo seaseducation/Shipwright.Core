@@ -38,7 +38,10 @@ namespace Shipwright.Dataflows.Transformations
                 if ( transformation == null ) throw new ArgumentNullException( nameof( transformation ) );
 
                 var connectionFactory = await dispatcher.Build( transformation.ConnectionInfo, cancellationToken );
-                return new Handler( transformation, connectionFactory );
+
+                return transformation.CacheResults
+                    ? new CacheHandler( transformation, connectionFactory )
+                    : new Handler( transformation, connectionFactory );
             }
         }
     }

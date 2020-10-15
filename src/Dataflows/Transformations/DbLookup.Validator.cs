@@ -19,6 +19,22 @@ namespace Shipwright.Dataflows.Transformations
         public class Validator : AbstractValidator<DbLookup>
         {
             /// <summary>
+            /// Validator for the <see cref="FailureEventSetting"/> subtype.
+            /// </summary>
+
+            public class FailureEventSettingValidator : AbstractValidator<FailureEventSetting>
+            {
+                /// <summary>
+                /// Validator for the <see cref="FailureEventSetting"/> subtype.
+                /// </summary>
+
+                public FailureEventSettingValidator()
+                {
+                    RuleFor( _ => _.FailureEventMessage ).NotNull();
+                }
+            }
+
+            /// <summary>
             /// Validator for the <see cref="DbLookup"/> transformation.
             /// </summary>
 
@@ -50,8 +66,8 @@ namespace Shipwright.Dataflows.Transformations
                 RuleFor( _ => _.ConnectionInfo ).NotNull();
                 RuleFor( _ => _.Input ).NotNull().Must( HaveDefinedValues );
                 RuleFor( _ => _.Output ).NotNull().Must( HaveDefinedValues );
-                RuleFor( _ => _.QueryMultipleRecordEvent ).NotNull();
-                RuleFor( _ => _.QueryZeroRecordEvent ).NotNull();
+                RuleFor( _ => _.QueryMultipleRecordEvent ).NotNull().SetValidator( new FailureEventSettingValidator() );
+                RuleFor( _ => _.QueryZeroRecordEvent ).NotNull().SetValidator( new FailureEventSettingValidator() );
                 RuleFor( _ => _.Sql ).NotNull().NotWhiteSpace();
             }
         }

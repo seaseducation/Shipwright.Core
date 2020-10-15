@@ -35,6 +35,7 @@ namespace Shipwright.Dataflows.Transformations
 
         /// <summary>
         /// Collection of fields that are output by the query and their query result column names.
+        /// Column names are case sensitive.
         /// </summary>
 
         public ICollection<(string field, string column)> Output { get; init; } = new List<(string, string)>();
@@ -58,5 +59,14 @@ namespace Shipwright.Dataflows.Transformations
         /// </summary>
 
         public FailureEventSetting QueryMultipleRecordEvent { get; init; } = new FailureEventSetting();
+
+        /// <summary>
+        /// Whether to cache query results in memory.
+        /// Defaults to false.
+        /// Caching is only recommended when the same parameter values will be queried repeatedly.
+        /// This can increase performance at the cost of memory pressure.
+        /// </summary>
+
+        public bool CacheResults { get; set; }
     }
 }
