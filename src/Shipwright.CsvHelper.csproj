@@ -7,7 +7,7 @@
     <Nullable>enable</Nullable>
 
     <!-- NuGet package info -->
-    <Version>1.0.0-preview.1.1</Version>
+    <Version>1.0.0-preview.1.2</Version>
     <PackageId>Shipwright.CsvHelper</PackageId>
     <Authors>TTCO Holding Company Inc. and Contributors</Authors>
     <Copyright>Copyright 2020 TTCO Holding Company Inc. and Contributors</Copyright>
@@ -33,8 +33,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="CsvHelper" Version="15.0.6" />
-    <PackageReference Include="Shipwright.Core" Version="1.0.0-preview.2.2" />
+    <PackageReference Include="CsvHelper" Version="15.0.8" />
+    <PackageReference Include="Shipwright.Core" Version="1.0.0-preview.3" />
   </ItemGroup>
 
   <ItemGroup>

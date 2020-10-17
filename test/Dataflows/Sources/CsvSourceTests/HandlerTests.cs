@@ -198,22 +198,31 @@ namespace Shipwright.Dataflows.Sources.CsvSourceTests
                 }, options => options.ComparingByMembers<LogEvent>() );
             }
 
-            [Fact]
-            public async Task returns_records_with_first_line_header_names_when_header_used()
+            [Theory]
+            [InlineData( TrimOptions.Trim, null )]
+            [InlineData( TrimOptions.None, " " )]
+            public async Task returns_records_with_first_line_header_names_when_header_used( TrimOptions trimOptions, string whitespace )
             {
                 source = new CsvSource
                 {
                     Path = "Dataflows/Sources/CsvSourceTests/ValidFile.csv",
-                    Settings = CsvConfigurations.CommaSeparatedRfc4180WithHeader( CultureInfo.CurrentCulture ),
+                    Settings = new CsvConfiguration( CultureInfo.CurrentCulture ) { HasHeaderRecord = true, TrimOptions = trimOptions },
                 };
 
                 var expected = new List<Record>
                 {
                     new Record( dataflow, source, new Dictionary<string,object> { { "A", "x" }, { "B", "y" }, { "C", "z" } }, 2 ),
                     new Record( dataflow, source, new Dictionary<string,object> { { "A", "1" }, { "B", "2" }, { "C", "\"3\"" } }, 3 ),
+
+                    // whitespace should be null when trimming
+                    new Record( dataflow, source, new Dictionary<string,object> { { "A", "m" }, { "B", whitespace }, { "C", "n" } }, 4 ),
+
+                    // blank should always be null
+                    new Record( dataflow, source, new Dictionary<string,object> { { "A", "r" }, { "B", null }, { "C", "t" } }, 5 ),
                 };
 
                 var actual = (await method()).ToArray();
+                Assert.Equal( expected.Count, actual.Count() );
 
                 for ( var i = 0; i < expected.Count; i++ )
                 {
@@ -226,13 +235,15 @@ namespace Shipwright.Dataflows.Sources.CsvSourceTests
                 }
             }
 
-            [Fact]
-            public async Task returns_records_with_positional_header_names_when_header_not_used()
+            [Theory]
+            [InlineData( TrimOptions.Trim, null )]
+            [InlineData( TrimOptions.None, " " )]
+            public async Task returns_records_with_positional_header_names_when_header_not_used( TrimOptions trimOptions, string whitespace )
             {
                 source = new CsvSource
                 {
                     Path = "Dataflows/Sources/CsvSourceTests/ValidFile.csv",
-                    Settings = new CsvConfiguration( CultureInfo.CurrentCulture ) { HasHeaderRecord = false },
+                    Settings = new CsvConfiguration( CultureInfo.CurrentCulture ) { HasHeaderRecord = false, TrimOptions = trimOptions },
                 };
 
                 var expected = new List<Record>
@@ -240,9 +251,16 @@ namespace Shipwright.Dataflows.Sources.CsvSourceTests
                     new Record( dataflow, source, new Dictionary<string,object> { { "Field_0", "A" }, { "Field_1", "B" }, { "Field_2", "C" } }, 1 ),
                     new Record( dataflow, source, new Dictionary<string,object> { { "Field_0", "x" }, { "Field_1", "y" }, { "Field_2", "z" } }, 2 ),
                     new Record( dataflow, source, new Dictionary<string,object> { { "Field_0", "1" }, { "Field_1", "2" }, { "Field_2", "\"3\"" } }, 3 ),
+
+                    // whitespace should be null when trimming
+                    new Record( dataflow, source, new Dictionary<string,object> { { "Field_0", "m" }, { "Field_1", whitespace }, { "Field_2", "n" } }, 4 ),
+
+                    // blank should always be null
+                    new Record( dataflow, source, new Dictionary<string,object> { { "Field_0", "r" }, { "Field_1", null }, { "Field_2", "t" } }, 5 ),
                 };
 
                 var actual = (await method()).ToArray();
+                Assert.Equal( expected.Count, actual.Count() );
 
                 for ( var i = 0; i < expected.Count; i++ )
                 {
@@ -254,6 +272,8 @@ namespace Shipwright.Dataflows.Sources.CsvSourceTests
                     actual[i].Events.Should().BeEquivalentTo( expected[i].Events );
                 }
             }
+
+
         }
     }
 }

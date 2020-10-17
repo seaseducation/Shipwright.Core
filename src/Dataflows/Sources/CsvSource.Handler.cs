@@ -75,7 +75,8 @@ namespace Shipwright.Dataflows.Sources
 
                         try
                         {
-                            data.Add( field, record[i] );
+                            var value = record[i];
+                            data.Add( field, string.IsNullOrEmpty( value ) ? null! : value );
                         }
 
                         catch ( ArgumentException )
@@ -137,7 +138,10 @@ namespace Shipwright.Dataflows.Sources
                         }
                     }
 
-                    yield return enumerator.Current;
+                    if ( more )
+                    {
+                        yield return enumerator.Current;
+                    }
                 }
             }
         }
