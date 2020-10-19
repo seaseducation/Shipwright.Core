@@ -118,7 +118,16 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="DbLookupFailureMessage" xml:space="preserve">
-    <value>Database query lookup failed. The query returned {0} matching records.</value>
+    <value>Database query lookup failed; the query returned {0} matching records</value>
+  </data>
+  <data name="DbUpsertKeyNotUnique" xml:space="preserve">
+    <value>Database upsert failed; the key parameter values are not unique</value>
+  </data>
+  <data name="DbUpsertMissingElementName" xml:space="preserve">
+    <value>'{PropertyName}' field and column names cannot be null, empty, nor whitespace</value>
+  </data>
+  <data name="DbUpsertMissingKey" xml:space="preserve">
+    <value>'{PropertyName}' must have at least one Key column mapping</value>
   </data>
   <data name="MissingRequiredFieldValue" xml:space="preserve">
     <value>Required value is missing from the field [{0}]</value>
