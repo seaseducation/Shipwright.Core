@@ -166,7 +166,7 @@ namespace Shipwright.Dataflows.Transformations
             /// <param name="parameters">Statement parameters.</param>
             /// <param name="cancellationToken">Cancellation token.</param>
 
-            public async Task Execute( string sql, IDictionary<string, object> parameters, CancellationToken cancellationToken )
+            public virtual async Task Execute( string sql, IDictionary<string, object> parameters, CancellationToken cancellationToken )
             {
                 var command = new CommandDefinition( sql, parameters: parameters, cancellationToken: cancellationToken );
                 using var connection = connectionFactory.Create();

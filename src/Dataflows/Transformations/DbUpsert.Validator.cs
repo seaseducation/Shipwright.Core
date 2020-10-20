@@ -25,12 +25,15 @@ namespace Shipwright.Dataflows.Transformations
             {
                 bool HaveDefinedFieldNames( DbUpsert transformation, IEnumerable<Mapping> mappings, PropertyValidatorContext context )
                 {
-                    foreach ( var (field, column, type) in mappings )
+                    if ( mappings != null )
                     {
-                        if ( string.IsNullOrWhiteSpace( field ) || string.IsNullOrWhiteSpace( column ) )
+                        foreach ( var (field, column, type) in mappings )
                         {
-                            context.MessageFormatter.AppendArgument( "ValidationMessage", Resources.CoreErrorMessages.DbUpsertMissingElementName );
-                            return false;
+                            if ( string.IsNullOrWhiteSpace( field ) || string.IsNullOrWhiteSpace( column ) )
+                            {
+                                context.MessageFormatter.AppendArgument( "ValidationMessage", Resources.CoreErrorMessages.DbUpsertMissingElementName );
+                                return false;
+                            }
                         }
                     }
 
@@ -39,11 +42,14 @@ namespace Shipwright.Dataflows.Transformations
 
                 bool HaveAtLeastOneKey( DbUpsert transformation, IEnumerable<Mapping> mappings, PropertyValidatorContext context )
                 {
-                    foreach ( var (field, column, type) in mappings )
+                    if ( mappings != null )
                     {
-                        if ( type == ColumnType.Key )
+                        foreach ( var (field, column, type) in mappings )
                         {
-                            return true;
+                            if ( type == ColumnType.Key )
+                            {
+                                return true;
+                            }
                         }
                     }
 
@@ -54,6 +60,8 @@ namespace Shipwright.Dataflows.Transformations
                 RuleFor( _ => _.ConnectionInfo ).NotNull();
                 RuleFor( _ => _.Mappings ).NotNull().NotEmpty().Must( HaveDefinedFieldNames ).Must( HaveAtLeastOneKey );
                 RuleFor( _ => _.Table ).NotNull().NotWhiteSpace();
+                RuleFor( _ => _.SqlHelper ).NotNull();
+                RuleFor( _ => _.DuplicateKeyEventMessage ).NotNull();
             }
         }
     }
