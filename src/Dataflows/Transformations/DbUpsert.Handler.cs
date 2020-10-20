@@ -188,10 +188,7 @@ namespace Shipwright.Dataflows.Transformations
 
                 foreach ( var (field, column, type) in transformation.Mappings )
                 {
-                    if ( type != ColumnType.Trigger )
-                    {
-                        map[column] = new ColumnValue( column, $"p{++index}", record.Data.TryGetValue( field, out var value ) ? value : null! );
-                    }
+                    map[column] = new ColumnValue( column, $"p{++index}", record.Data.TryGetValue( field, out var value ) ? value : null! );
                 }
 
                 parameters = map.Values.ToDictionary( _ => _.Parameter, _ => _.Value );
