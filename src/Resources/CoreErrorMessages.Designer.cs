@@ -61,6 +61,15 @@ namespace Shipwright.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Database query lookup failed. The query returned {0} matching records..
+        /// </summary>
+        public static string DbLookupFailureMessage {
+            get {
+                return ResourceManager.GetString("DbLookupFailureMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Required value is missing from the field [{0}].
         /// </summary>
         public static string MissingRequiredFieldValue {
