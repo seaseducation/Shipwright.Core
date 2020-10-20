@@ -150,7 +150,7 @@ namespace Shipwright.Dataflows.Transformations.DbLookupTests
             private void method() => (instance() as Handler).MapResult( record, result );
 
             [Fact]
-            public void overrites_existing_field_when_column_present()
+            public void overwrites_existing_field_when_column_present()
             {
                 var fixture = new Fixture();
                 transformation = transformation with { Output = new List<(string, string)>( fixture.CreateMany<(string, string)>( 3 ) ) };

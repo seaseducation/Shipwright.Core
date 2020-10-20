@@ -13,7 +13,7 @@ namespace Shipwright.Databases
     /// </summary>
     /// <typeparam name="TConnectionInfo">Type of the database connection information.</typeparam>
     /// <remarks>
-    /// This abstration exists to support those cases where complex logic may be needed to compose
+    /// This abstraction exists to support those cases where complex logic may be needed to compose
     /// the root information for connecting to a database. For example, in a multi-tenant application
     /// where tenant databases may exist on different services, this allows an awaitable means of
     /// locating a specific database using an external service.
