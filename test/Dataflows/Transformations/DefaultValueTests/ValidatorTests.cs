@@ -4,6 +4,7 @@
 // See https://opensource.org/licenses/Apache-2.0 or the LICENSE file in the repository root for the full text of the license.
 
 using FluentValidation;
+using System;
 using System.Collections.Generic;
 using Xunit;
 using static Shipwright.Dataflows.Transformations.DefaultValue;
@@ -20,7 +21,7 @@ namespace Shipwright.Dataflows.Transformations.DefaultValueTests
             public void invalid_when_null() => validator.InvalidWhen( _ => _.Defaults, null );
 
             [Fact]
-            public void valid_when_given() => validator.ValidWhen( _ => _.Defaults, new List<(string, object)>() );
+            public void valid_when_given() => validator.ValidWhen( _ => _.Defaults, new List<(string, Func<object>)>() );
         }
     }
 }

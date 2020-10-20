@@ -47,7 +47,7 @@ namespace Shipwright.Dataflows.Transformations
 
                     if ( missing )
                     {
-                        record.Data[field] = @default;
+                        record.Data[field] = @default();
                     }
                 }
             }

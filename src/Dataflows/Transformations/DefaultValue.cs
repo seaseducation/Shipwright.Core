@@ -3,6 +3,7 @@
 // Licensed under the Apache License, Version 2.0
 // See https://opensource.org/licenses/Apache-2.0 or the LICENSE file in the repository root for the full text of the license.
 
+using System;
 using System.Collections.Generic;
 
 namespace Shipwright.Dataflows.Transformations
@@ -18,7 +19,7 @@ namespace Shipwright.Dataflows.Transformations
         /// Collection of default values mapped to their field names.
         /// </summary>
 
-        public ICollection<(string field, object value)> Defaults { get; init; } = new List<(string, object)>();
+        public ICollection<(string field, Func<object> factory)> Defaults { get; init; } = new List<(string, Func<object>)>();
 
         /// <summary>
         /// Whether to overwrite blank/whitespace text values with the default value.
