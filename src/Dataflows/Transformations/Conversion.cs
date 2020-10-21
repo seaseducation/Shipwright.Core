@@ -26,13 +26,13 @@ namespace Shipwright.Dataflows.Transformations
         /// <param name="result">Converted value, when successful.</param>
         /// <returns>True when conversion is successful; otherwise false.</returns>
 
-        public delegate bool TryConvertDelegate( object value, out object? result );
+        public delegate bool ConverterDelegate( object value, out object? result );
 
         /// <summary>
         /// Delegate for converting values.
         /// </summary>
 
-        public TryConvertDelegate Converter { get; init; } = null!;
+        public ConverterDelegate Converter { get; init; } = null!;
 
         /// <summary>
         /// Defines a delegate for generating an event message for conversion failures.

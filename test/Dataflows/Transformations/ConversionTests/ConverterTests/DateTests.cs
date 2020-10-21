@@ -11,7 +11,7 @@ namespace Shipwright.Dataflows.Transformations.ConversionTests.ConverterTests
 {
     public class DateTests
     {
-        private TryConvertDelegate instance() => Converters.Date;
+        private ConverterDelegate instance() => Converters.Date;
 
         private object value;
         private object result;

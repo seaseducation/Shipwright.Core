@@ -11,7 +11,7 @@ namespace Shipwright.Dataflows.Transformations.ConversionTests.ConverterTests
 {
     public class IntegerTests
     {
-        private TryConvertDelegate instance() => Converters.Integer();
+        private ConverterDelegate instance() => Converters.Integer();
 
         private object value;
         private object result;

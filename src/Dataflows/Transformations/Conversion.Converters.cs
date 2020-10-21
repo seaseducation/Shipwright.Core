@@ -21,7 +21,7 @@ namespace Shipwright.Dataflows.Transformations
             /// Creates a converter for integer values.
             /// </summary>
 
-            public static TryConvertDelegate Integer( NumberStyles styles = NumberStyles.Any, CultureInfo? cultureInfo = null ) => delegate ( object value, out object? result )
+            public static ConverterDelegate Integer( NumberStyles styles = NumberStyles.Any, CultureInfo? cultureInfo = null ) => delegate ( object value, out object? result )
             {
                 cultureInfo ??= CultureInfo.CurrentCulture;
 
@@ -56,7 +56,7 @@ namespace Shipwright.Dataflows.Transformations
             /// Validator for email addresses.
             /// </summary>
 
-            public static TryConvertDelegate Email { get; } = delegate ( object value, out object? result )
+            public static ConverterDelegate Email { get; } = delegate ( object value, out object? result )
             {
                 if ( value is string text && emailValidator.IsValid( text ) )
                 {
@@ -82,7 +82,7 @@ namespace Shipwright.Dataflows.Transformations
             /// Basic boolean converter.
             /// </summary>
 
-            public static TryConvertDelegate Boolean { get; } = delegate ( object value, out object? result )
+            public static ConverterDelegate Boolean { get; } = delegate ( object value, out object? result )
             {
                 if ( value is bool converted || (value is string text && bool.TryParse( text, out converted )) )
                 {
@@ -109,7 +109,7 @@ namespace Shipwright.Dataflows.Transformations
             /// Date converter that yields a <see cref="DateTime"/> value with no time component.
             /// </summary>
 
-            public static TryConvertDelegate Date { get; } = delegate ( object value, out object? result )
+            public static ConverterDelegate Date { get; } = delegate ( object value, out object? result )
             {
                 if ( value is DateTime converted || (value is string text && System.DateTime.TryParse( text, out converted )) )
                 {
@@ -136,7 +136,7 @@ namespace Shipwright.Dataflows.Transformations
             /// Date and time converter that yields a <see cref="DateTime"/>.
             /// </summary>
 
-            public static TryConvertDelegate DateTime { get; } = delegate ( object value, out object? result )
+            public static ConverterDelegate DateTime { get; } = delegate ( object value, out object? result )
             {
                 if ( value is DateTime converted || (value is string text && System.DateTime.TryParse( text, out converted )) )
                 {
@@ -163,7 +163,7 @@ namespace Shipwright.Dataflows.Transformations
             /// Creates a converter for decimal values.
             /// </summary>
 
-            public static TryConvertDelegate Decimal( NumberStyles styles = NumberStyles.Any, CultureInfo? cultureInfo = null ) => delegate ( object value, out object? result )
+            public static ConverterDelegate Decimal( NumberStyles styles = NumberStyles.Any, CultureInfo? cultureInfo = null ) => delegate ( object value, out object? result )
             {
                 cultureInfo ??= CultureInfo.CurrentCulture;
 

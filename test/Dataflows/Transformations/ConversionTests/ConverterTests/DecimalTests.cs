@@ -11,7 +11,7 @@ namespace Shipwright.Dataflows.Transformations.ConversionTests.ConverterTests
 {
     public class DecimalTests
     {
-        private TryConvertDelegate instance() => Converters.Decimal();
+        private ConverterDelegate instance() => Converters.Decimal();
 
         private object value;
         private object result;
