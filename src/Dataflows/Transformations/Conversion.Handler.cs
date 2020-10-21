@@ -17,7 +17,7 @@ namespace Shipwright.Dataflows.Transformations
 
         public class Handler : TransformationHandler
         {
-            private readonly Conversion transformation;
+            internal readonly Conversion transformation;
 
             /// <summary>
             /// Handler for the <see cref="Conversion"/> transformation.
