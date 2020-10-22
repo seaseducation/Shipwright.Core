@@ -47,18 +47,19 @@ namespace Shipwright.Dataflows.Transformations.DefaultValueTests
             public async Task defaults_value_when_missing( bool defaultOnBlank )
             {
                 var fixture = FakeRecord.Fixture();
+                var prefix = Guid.NewGuid();
 
                 transformation = new DefaultValue
                 {
                     DefaultOnBlank = defaultOnBlank,
-                    Defaults = fixture.CreateMany<string>( 3 ).Select( field => (field, (object)Guid.NewGuid()) ).ToList(),
+                    Defaults = fixture.CreateMany<string>( 3 ).Select( field => (field, new Func<object>( () => $"{prefix}{field}" )) ).ToList()
                 };
 
                 var expected = new Dictionary<string, object>( record.Data );
 
                 foreach ( var (field, value) in transformation.Defaults )
                 {
-                    expected[field] = value;
+                    expected[field] = value();
                     record.Data.Remove( field );
                 }
 
@@ -70,18 +71,19 @@ namespace Shipwright.Dataflows.Transformations.DefaultValueTests
             public async Task defaults_value_when_null( bool defaultOnBlank )
             {
                 var fixture = FakeRecord.Fixture();
+                var prefix = Guid.NewGuid();
 
                 transformation = new DefaultValue
                 {
                     DefaultOnBlank = defaultOnBlank,
-                    Defaults = fixture.CreateMany<string>( 3 ).Select( field => (field, (object)Guid.NewGuid()) ).ToList(),
+                    Defaults = fixture.CreateMany<string>( 3 ).Select( field => (field, new Func<object>( () => $"{prefix}{field}" )) ).ToList()
                 };
 
                 var expected = new Dictionary<string, object>( record.Data );
 
                 foreach ( var (field, value) in transformation.Defaults )
                 {
-                    expected[field] = value;
+                    expected[field] = value();
                     record.Data[field] = null;
                 }
 
@@ -93,11 +95,12 @@ namespace Shipwright.Dataflows.Transformations.DefaultValueTests
             public async Task retains_whitespace_when_not_defaulting_on_blank( string whitespace )
             {
                 var fixture = FakeRecord.Fixture();
+                var prefix = Guid.NewGuid();
 
                 transformation = new DefaultValue
                 {
                     DefaultOnBlank = false,
-                    Defaults = fixture.CreateMany<string>( 3 ).Select( field => (field, (object)Guid.NewGuid()) ).ToList(),
+                    Defaults = fixture.CreateMany<string>( 3 ).Select( field => (field, new Func<object>( () => $"{prefix}{field}" )) ).ToList()
                 };
 
                 foreach ( var (field, value) in transformation.Defaults )
@@ -116,18 +119,19 @@ namespace Shipwright.Dataflows.Transformations.DefaultValueTests
             public async Task replaces_whitespace_when_defaulting_on_blank( string whitespace )
             {
                 var fixture = FakeRecord.Fixture();
+                var prefix = Guid.NewGuid();
 
                 transformation = new DefaultValue
                 {
                     DefaultOnBlank = true,
-                    Defaults = fixture.CreateMany<string>( 3 ).Select( field => (field, (object)Guid.NewGuid()) ).ToList(),
+                    Defaults = fixture.CreateMany<string>( 3 ).Select( field => (field, new Func<object>( () => $"{prefix}{field}" )) ).ToList()
                 };
 
                 var expected = new Dictionary<string, object>( record.Data );
 
                 foreach ( var (field, value) in transformation.Defaults )
                 {
-                    expected[field] = value;
+                    expected[field] = value();
                     record.Data[field] = whitespace;
                 }
 

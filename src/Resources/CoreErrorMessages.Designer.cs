@@ -61,11 +61,38 @@ namespace Shipwright.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Database query lookup failed. The query returned {0} matching records..
+        ///   Looks up a localized string similar to Database query lookup failed; the query returned {0} matching records.
         /// </summary>
         public static string DbLookupFailureMessage {
             get {
                 return ResourceManager.GetString("DbLookupFailureMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database upsert failed; the key parameter values are not unique.
+        /// </summary>
+        public static string DbUpsertKeyNotUnique {
+            get {
+                return ResourceManager.GetString("DbUpsertKeyNotUnique", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &apos;{PropertyName}&apos; field and column names cannot be null, empty, nor whitespace.
+        /// </summary>
+        public static string DbUpsertMissingElementName {
+            get {
+                return ResourceManager.GetString("DbUpsertMissingElementName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &apos;{PropertyName}&apos; must have at least one Key column mapping.
+        /// </summary>
+        public static string DbUpsertMissingKey {
+            get {
+                return ResourceManager.GetString("DbUpsertMissingKey", resourceCulture);
             }
         }
         
