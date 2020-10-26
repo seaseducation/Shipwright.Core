@@ -140,5 +140,14 @@ namespace Shipwright.Resources {
                 return ResourceManager.GetString("NoWhiteSpaceElementsValidationMessage", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to convert the value of the field {0}.
+        /// </summary>
+        public static string ValueConversionFailed {
+            get {
+                return ResourceManager.GetString("ValueConversionFailed", resourceCulture);
+            }
+        }
     }
 }

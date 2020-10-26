@@ -144,4 +144,7 @@
   <data name="NoWhiteSpaceElementsValidationMessage" xml:space="preserve">
     <value>'{PropertyName}' cannot contain whitespace elements</value>
   </data>
+  <data name="ValueConversionFailed" xml:space="preserve">
+    <value>Unable to convert the value of the field {0}</value>
+  </data>
 </root>
