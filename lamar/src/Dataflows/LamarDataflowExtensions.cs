@@ -29,6 +29,7 @@ namespace Shipwright
             .AddTransformationDispatch()
             .AddTransformationValidation()
             .AddTransformationCancellation()
+            .AddTransformationThrottling()
             .AddTransformationEventInspection();
 
         /// <summary>
