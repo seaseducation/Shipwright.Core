@@ -13,25 +13,17 @@ namespace Shipwright.Dataflows.Transformations.Internal
 {
     public class ThrottleableFactoryDecoratorTests
     {
-        public class Context<TTransformation> where TTransformation : Transformation
+        private ITransformationFactory<FakeTransformation> inner;
+        private ITransformationFactory<FakeTransformation> instance() => new ThrottleableFactoryDecorator<FakeTransformation>( inner );
+
+        private readonly Mock<ITransformationFactory<FakeTransformation>> mockInner;
+
+        public ThrottleableFactoryDecoratorTests()
         {
-            public ITransformationFactory<TTransformation> inner;
-            public ITransformationFactory<TTransformation> instance() => new ThrottleableFactoryDecorator<TTransformation>( inner );
-
-            public Mock<ITransformationFactory<TTransformation>> mockInner;
-
-            public Context()
-            {
-                mockInner = Mockery.Of( out inner );
-            }
+            mockInner = Mockery.Of( out inner );
         }
 
-        public record FakeThrottleableTransformation : ThrottleableTransformation
-        {
-            public Guid Value { get; init; } = Guid.NewGuid();
-        }
-
-        public abstract class Constructor<TTransformation> : Context<TTransformation> where TTransformation : Transformation
+        public class Constructor : ThrottleableFactoryDecoratorTests
         {
             [Fact]
             public void requires_inner()
@@ -41,12 +33,9 @@ namespace Shipwright.Dataflows.Transformations.Internal
             }
         }
 
-        public class Constructor_Normal : Constructor<FakeTransformation> { }
-        public class Constructor_Throttleable : Constructor<FakeThrottleableTransformation> { }
-
-        public abstract class Create<TTransformation> : Context<TTransformation> where TTransformation : Transformation, new()
+        public class Create : ThrottleableFactoryDecoratorTests
         {
-            public TTransformation transformation = new TTransformation();
+            private FakeTransformation transformation = new FakeTransformation();
             public CancellationToken cancellationToken;
             public Task<ITransformationHandler> method() => instance().Create( transformation, cancellationToken );
 
@@ -56,30 +45,12 @@ namespace Shipwright.Dataflows.Transformations.Internal
                 transformation = null!;
                 await Assert.ThrowsAsync<ArgumentNullException>( nameof( transformation ), method );
             }
-        }
 
-        public class Create_Normal : Create<FakeTransformation>
-        {
-            [Theory, Cases.BooleanCases]
-            public async Task returns_handler_from_inner( bool canceled )
-            {
-                cancellationToken = new CancellationToken( canceled );
-
-                var expected = Mockery.Of<ITransformationHandler>();
-                mockInner.Setup( _ => _.Create( transformation, cancellationToken ) ).ReturnsAsync( expected ).Verifiable();
-
-                var actual = await method();
-                Assert.Same( expected, actual );
-            }
-        }
-
-        public class Create_Throttleable : Create<FakeThrottleableTransformation>
-        {
             [Theory, Cases.BooleanCases]
             public async Task returns_handler_from_inner_when_maxdop_is_unlimited( bool canceled )
             {
                 cancellationToken = new CancellationToken( canceled );
-                transformation = new FakeThrottleableTransformation { MaxDegreeOfParallelism = int.MaxValue };
+                transformation = new FakeTransformation { MaxDegreeOfParallelism = int.MaxValue };
 
                 var expected = Mockery.Of<ITransformationHandler>();
                 mockInner.Setup( _ => _.Create( transformation, cancellationToken ) ).ReturnsAsync( expected ).Verifiable();
@@ -100,7 +71,7 @@ namespace Shipwright.Dataflows.Transformations.Internal
                 }
 
                 cancellationToken = new CancellationToken( canceled );
-                transformation = new FakeThrottleableTransformation { MaxDegreeOfParallelism = maxDop };
+                transformation = new FakeTransformation { MaxDegreeOfParallelism = maxDop };
 
                 var expected = Mockery.Of<ITransformationHandler>();
                 mockInner.Setup( _ => _.Create( transformation, cancellationToken ) ).ReturnsAsync( expected ).Verifiable();

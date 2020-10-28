@@ -38,8 +38,8 @@ namespace Shipwright.Dataflows.Transformations.Internal
 
             var handler = await inner.Create( transformation, cancellationToken );
 
-            return transformation is ThrottleableTransformation throttleable && throttleable.MaxDegreeOfParallelism < int.MaxValue
-                ? new ThrottleableHandlerDecorator( throttleable.MaxDegreeOfParallelism, handler )
+            return transformation.MaxDegreeOfParallelism < int.MaxValue
+                ? new ThrottleableHandlerDecorator( transformation.MaxDegreeOfParallelism, handler )
                 : handler;
         }
     }

@@ -11,5 +11,13 @@ namespace Shipwright.Dataflows.Transformations
     /// Defines a dataflow record transformation.
     /// </summary>
 
-    public abstract record Transformation : IRequiresValidation { }
+    public abstract record Transformation : IRequiresValidation
+    {
+        /// <summary>
+        /// Maximum number of concurrent records that can be transformed by the transformation's handler.
+        /// Defaults to unlimited.
+        /// </summary>
+
+        public int MaxDegreeOfParallelism { get; init; } = int.MaxValue;
+    }
 }
