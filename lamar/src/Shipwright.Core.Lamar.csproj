@@ -7,7 +7,7 @@
     <Nullable>enable</Nullable>
 
     <!-- NuGet package info -->
-    <Version>1.0.0-preview.4.2</Version>
+    <Version>1.0.0-preview.4.5</Version>
     <PackageId>Shipwright.Core.Lamar</PackageId>
     <Authors>TTCO Holding Company Inc. and Contributors</Authors>
     <Copyright>Copyright 2020 TTCO Holding Company Inc. and Contributors</Copyright>

@@ -163,5 +163,32 @@ namespace Shipwright.Dataflows
                 Assert.Same( inner, decorator.inner );
             }
         }
+
+        public class AddTransformationThrottling : LamarDataflowTransformationExtensionsTests
+        {
+            private ServiceRegistry method() => registry.AddTransformationThrottling();
+
+            [Fact]
+            public void requires_registry()
+            {
+                registry = null!;
+                Assert.Throws<ArgumentNullException>( nameof( registry ), method );
+            }
+
+            [Fact]
+            public void decorates_handler()
+            {
+                var inner = Mockery.Of<ITransformationFactory<FakeTransformation>>();
+                registry.For<ITransformationFactory<FakeTransformation>>().Add( inner );
+
+                var actual = method();
+                Assert.Same( registry, actual );
+
+                using var container = new Container( registry );
+                var instance = container.GetInstance<ITransformationFactory<FakeTransformation>>();
+                var decorator = Assert.IsType<ThrottleableFactoryDecorator<FakeTransformation>>( instance );
+                Assert.Same( inner, decorator.inner );
+            }
+        }
     }
 }
