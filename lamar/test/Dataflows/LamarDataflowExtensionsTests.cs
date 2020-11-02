@@ -93,7 +93,7 @@ namespace Shipwright.Dataflows
                 // outer decorator should be event inspection
                 var inspection = Assert.IsType<Transformations.Internal.EventInspectionFactoryDecorator<FakeTransformation>>( instance );
 
-                // next decorator should be cancellation
+                // next decorator should be throttling
                 var throttling = Assert.IsType<Transformations.Internal.ThrottleableFactoryDecorator<FakeTransformation>>( inspection.inner );
 
                 // next decorator should be cancellation
