@@ -120,6 +120,9 @@
   <data name="DbLookupFailureMessage" xml:space="preserve">
     <value>Database query lookup failed; the query returned {0} matching records</value>
   </data>
+  <data name="DbSourceColumnMissing" xml:space="preserve">
+    <value>Column name not found in database query results</value>
+  </data>
   <data name="DbUpsertKeyNotUnique" xml:space="preserve">
     <value>Database upsert failed; the key parameter values are not unique</value>
   </data>

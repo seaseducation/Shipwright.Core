@@ -70,6 +70,15 @@ namespace Shipwright.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Column name not found in database query results.
+        /// </summary>
+        public static string DbSourceColumnMissing {
+            get {
+                return ResourceManager.GetString("DbSourceColumnMissing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Database upsert failed; the key parameter values are not unique.
         /// </summary>
         public static string DbUpsertKeyNotUnique {
