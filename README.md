@@ -1,11 +1,9 @@
 # Shipwright.Core
 Core components of the Shipwright Extract-Transform-Load (ETL) toolset.
 
-This project is currently experimental and uses features from a pre-release version of .NET 5.
-
 You will need one of the following to work with the code:
-- .NET 5 SDK Release Candidate 2 (RC2)
-- Visual Studio 2019 16.8 Preview 4 (includes the above SDK)
+- .NET 5 SDK
+- Visual Studio 2019 16.8 or later (includes the above SDK)
 
 # License
 Shipwright.Core and the contents of this repository are licensed under the [Apache License, Version 2.0](https://opensource.org/licenses/Apache-2.0). 
