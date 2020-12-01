@@ -7,7 +7,7 @@
     <Nullable>enable</Nullable>
 
     <!-- NuGet package info -->
-    <Version>1.0.0-preview.1.2</Version>
+    <Version>1.0.0-rc.1.1</Version>
     <PackageId>Shipwright.Npgsql</PackageId>
     <Authors>TTCO Holding Company Inc. and Contributors</Authors>
     <Copyright>Copyright 2020 TTCO Holding Company Inc. and Contributors</Copyright>
@@ -34,7 +34,7 @@
 
   <ItemGroup>
     <PackageReference Include="Npgsql" Version="4.1.5" />
-    <PackageReference Include="Shipwright.Core" Version="1.0.0-preview.4" />
+    <PackageReference Include="Shipwright.Core" Version="1.0.0-rc.1.1" />
   </ItemGroup>
 
 </Project>
