@@ -3,7 +3,10 @@
 // Licensed under the Apache License, Version 2.0
 // See https://opensource.org/licenses/Apache-2.0 or the LICENSE file in the repository root for the full text of the license.
 
+using System.Collections.Generic;
+using System.Reflection;
 using Xunit;
+using Xunit.Sdk;
 
 namespace Shipwright
 {
@@ -55,6 +58,23 @@ namespace Shipwright
         }
 
         /// <summary>
+        /// Attribute for injecting null and whitespace cases.
+        /// </summary>
+
+        public class NullAndWhiteSpaceAttribute : DataAttribute
+        {
+            public override IEnumerable<object[]> GetData( MethodInfo testMethod )
+            {
+                var values = new[] { string.Empty, WhiteSpace, null };
+
+                foreach ( var value in values )
+                {
+                    yield return new[] { value };
+                }
+            }
+        }
+
+        /// <summary>
         /// Collection of boolean cases.
         /// </summary>
 
@@ -64,6 +84,15 @@ namespace Shipwright
             {
                 Add( true );
                 Add( false );
+            }
+        }
+
+        public class BooleanCasesAttribute : DataAttribute
+        {
+            public override IEnumerable<object[]> GetData( MethodInfo testMethod )
+            {
+                yield return new object[] { true };
+                yield return new object[] { false };
             }
         }
     }
