@@ -7,7 +7,7 @@
     <Nullable>enable</Nullable>
 
     <!-- NuGet package info -->
-    <Version>1.0.0-preview.4.6</Version>
+    <Version>1.0.0-rc.1.1</Version>
     <PackageId>Shipwright.Core</PackageId>
     <Authors>TTCO Holding Company Inc. and Contributors</Authors>
     <Copyright>Copyright 2020 TTCO Holding Company Inc. and Contributors</Copyright>
@@ -37,9 +37,9 @@
 
   <ItemGroup>
     <PackageReference Include="Dapper" Version="2.0.35" />
-    <PackageReference Include="FluentValidation" Version="9.2.0" />
+    <PackageReference Include="FluentValidation" Version="9.3.0" />
     <PackageReference Include="Identifiable" Version="4.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0-rc.2.20475.5" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
     <PackageReference Include="Nito.AsyncEx" Version="5.1.0" />
   </ItemGroup>
 

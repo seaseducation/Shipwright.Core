@@ -18,6 +18,6 @@ namespace Shipwright.Dataflows.Transformations
         /// Defaults to unlimited.
         /// </summary>
 
-        public int MaxDegreeOfParallelism { get; init; } = int.MaxValue;
+        public virtual int MaxDegreeOfParallelism { get; init; } = int.MaxValue;
     }
 }
