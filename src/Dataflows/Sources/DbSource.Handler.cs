@@ -51,6 +51,25 @@ namespace Shipwright.Dataflows.Sources
                 using var reader = await connection.ExecuteReaderAsync( command );
                 var columns = new Dictionary<string, int>();
 
+                void extractByColumn( IDataReader reader, Dictionary<string, object> data )
+                {
+                    foreach ( var (column, ordinal) in columns )
+                    {
+                        data[column] = reader.IsDBNull( ordinal ) ? null! : reader.GetValue( ordinal );
+                    }
+                }
+
+                void extractByField( IDataReader reader, Dictionary<string, object> data )
+                {
+                    foreach ( var (field, column) in source.Output )
+                    {
+                        if ( columns!.TryGetValue( column, out var ordinal ) )
+                        {
+                            data[field] = reader.IsDBNull( ordinal ) ? null! : reader.GetValue( ordinal );
+                        }
+                    }
+                }
+
                 Record extract( IDataReader reader )
                 {
                     // set ordinal field mappings on first record
@@ -79,12 +98,16 @@ namespace Shipwright.Dataflows.Sources
 
                     var data = new Dictionary<string, object>( dataflow.FieldNameComparer );
 
-                    foreach ( var (field, column) in source.Output )
+                    // when outputs are explicitly defined, use them
+                    if ( source.Output.Any() )
                     {
-                        if ( columns.TryGetValue( column, out var ordinal ) )
-                        {
-                            data[field] = reader.IsDBNull( ordinal ) ? null! : reader.GetValue( ordinal );
-                        }
+                        extractByField( reader, data );
+                    }
+
+                    // when outputs are not defined, output all columns using column names for field names
+                    else
+                    {
+                        extractByColumn( reader, data );
                     }
 
                     return new Record( dataflow, source, data, ++position );
