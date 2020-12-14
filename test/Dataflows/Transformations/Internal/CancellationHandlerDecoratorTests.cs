@@ -72,7 +72,7 @@ namespace Shipwright.Dataflows.Transformations.Internal
             private ValueTask method() => instance().DisposeAsync();
 
             [Fact]
-            public async ValueTask disposes_inner_handler()
+            public async Task disposes_inner_handler()
             {
                 mockInner.Setup( _ => _.DisposeAsync() ).Returns( ValueTask.CompletedTask );
 
