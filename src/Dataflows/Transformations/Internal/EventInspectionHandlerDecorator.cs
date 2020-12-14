@@ -27,6 +27,12 @@ namespace Shipwright.Dataflows.Transformations.Internal
         }
 
         /// <summary>
+        /// Implementation of <see cref="IAsyncDisposable"/>.
+        /// </summary>
+
+        protected override ValueTask DisposeAsyncCore() => inner.DisposeAsync();
+
+        /// <summary>
         /// Inspects a record's events and skips processing when a fatal event is found.
         /// </summary>
 
