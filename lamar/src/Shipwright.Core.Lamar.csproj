@@ -7,13 +7,13 @@
     <Nullable>enable</Nullable>
 
     <!-- NuGet package info -->
-    <Version>1.0.0-rc.1.3</Version>
+    <Version>1.0.0-rc.1.5</Version>
     <PackageId>Shipwright.Core.Lamar</PackageId>
     <Authors>TTCO Holding Company Inc. and Contributors</Authors>
     <Copyright>Copyright 2020 TTCO Holding Company Inc. and Contributors</Copyright>
     <Description>Core components of the Shipwright Extract-Transform-Load (ETL) toolset using Lamar IoC.</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <RepositoryUrl>https://github.com/seaseducation/Shipwright.Core</RepositoryUrl>
+    <RepositoryUrl>https://github.com/seaseducation/Shipwright.Core.git</RepositoryUrl>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <DocumentationFile>bin/Shipwright.Core.Lamar.xml</DocumentationFile>
     <PackageReleaseNotes>See https://github.com/seaseducation/Shipwright.Core/releases</PackageReleaseNotes>

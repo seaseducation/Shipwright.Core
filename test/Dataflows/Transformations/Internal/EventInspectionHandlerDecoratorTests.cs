@@ -42,7 +42,7 @@ namespace Shipwright.Dataflows.Transformations.Internal
             private Task method() => instance().Transform( record, cancellationToken );
 
             [Fact]
-            public async ValueTask requires_record()
+            public async Task requires_record()
             {
                 record = null!;
                 await Assert.ThrowsAsync<ArgumentNullException>( nameof( record ), method );
@@ -50,7 +50,7 @@ namespace Shipwright.Dataflows.Transformations.Internal
 
             [Theory]
             [ClassData( typeof( Cases.BooleanCases ) )]
-            public async ValueTask skips_inner_when_fatal_event( bool canceled )
+            public async Task skips_inner_when_fatal_event( bool canceled )
             {
                 cancellationToken = new CancellationToken( canceled );
 
@@ -69,9 +69,8 @@ namespace Shipwright.Dataflows.Transformations.Internal
                 mockInner.Verify( _ => _.Transform( record, cancellationToken ), Times.Never() );
             }
 
-            [Theory]
-            [ClassData( typeof( Cases.BooleanCases ) )]
-            public async ValueTask calls_inner_when_no_fatal_events( bool canceled )
+            [Theory, Cases.BooleanCases]
+            public async Task calls_inner_when_no_fatal_events( bool canceled )
             {
                 cancellationToken = new CancellationToken( canceled );
 
@@ -97,9 +96,9 @@ namespace Shipwright.Dataflows.Transformations.Internal
             private ValueTask method() => instance().DisposeAsync();
 
             [Fact]
-            public async ValueTask disposes_inner_handler()
+            public async Task disposes_inner_handler()
             {
-                mockInner.Setup( _ => _.DisposeAsync() ).Returns( ValueTask.CompletedTask );
+                mockInner.Setup( _ => _.DisposeAsync() ).Returns( ValueTask.CompletedTask ).Verifiable();
 
                 await method();
                 mockInner.Verify( _ => _.DisposeAsync(), Times.Once() );

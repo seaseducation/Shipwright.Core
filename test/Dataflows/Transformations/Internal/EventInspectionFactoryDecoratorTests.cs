@@ -41,7 +41,7 @@ namespace Shipwright.Dataflows.Transformations.Internal
             private Task<ITransformationHandler> method() => instance().Create( transformation, cancellationToken );
 
             [Fact]
-            public async ValueTask requires_transformation()
+            public async Task requires_transformation()
             {
                 transformation = null!;
                 await Assert.ThrowsAsync<ArgumentNullException>( nameof( transformation ), method );
