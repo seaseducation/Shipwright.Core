@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
@@ -8,7 +8,7 @@
 
     <!-- NuGet package info -->
     <Version>1.0.0-rc.1.0</Version>
-    <PackageId>Shipwright.Npgsql</PackageId>
+    <PackageId>Shipwright.Oracle</PackageId>
     <Authors>TTCO Holding Company Inc. and Contributors</Authors>
     <Copyright>Copyright 2020 TTCO Holding Company Inc. and Contributors</Copyright>
     <Description>Shipwright components for Oracle.</Description>
@@ -30,6 +30,11 @@
       <_Parameter1>Shipwright.Oracle.Test</_Parameter1>
     </AssemblyAttribute>
 
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="2.19.100" />
+    <PackageReference Include="Shipwright.Core" Version="1.0.0-rc.1.5" />
   </ItemGroup>
   
 </Project>
