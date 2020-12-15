@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <RootNamespace>Shipwright</RootNamespace>
+    <NoWarn>1701;1702;1998</NoWarn>
+    <Nullable>enable</Nullable>
+
+    <!-- NuGet package info -->
+    <Version>1.0.0-rc.1.0</Version>
+    <PackageId>Shipwright.Npgsql</PackageId>
+    <Authors>TTCO Holding Company Inc. and Contributors</Authors>
+    <Copyright>Copyright 2020 TTCO Holding Company Inc. and Contributors</Copyright>
+    <Description>Shipwright components for Oracle.</Description>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <RepositoryUrl>https://github.com/seaseducation/Shipwright.Oracle.git</RepositoryUrl>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <DocumentationFile>bin/Shipwright.Oracle.xml</DocumentationFile>
+    <PackageReleaseNotes>See https://github.com/seaseducation/Shipwright.Oracle/releases</PackageReleaseNotes>
+  </PropertyGroup>
+
+  <ItemGroup>
+
+    <!-- allow file nesting in ide -->
+    <ProjectCapability Include="DynamicDependentFile" />
+    <ProjectCapability Include="DynamicFileNesting" />
+
+    <!-- allow access to test project to avoid unnecessary public modifiers -->
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+      <_Parameter1>Shipwright.Oracle.Test</_Parameter1>
+    </AssemblyAttribute>
+
+  </ItemGroup>
+  
+</Project>
