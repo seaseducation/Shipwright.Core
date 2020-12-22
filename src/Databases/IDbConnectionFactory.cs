@@ -19,5 +19,16 @@ namespace Shipwright.Databases
         /// <returns>A database connection.</returns>
 
         IDbConnection Create();
+
+        /// <summary>
+        /// Called when the data source has completed reading from the current record.
+        /// This can be used to perform any post-processing of data values specific to the database provider.
+        /// </summary>
+        /// <param name="reader">Data reader at the current record position.</param>
+        /// <remarks>
+        /// This was added as a callback due to a memory leak when reading blob/clob data from Oracle.
+        /// </remarks>
+
+        void FinishReadingCurrentRecord( IDataReader reader ) { }
     }
 }
