@@ -13,6 +13,9 @@ namespace Shipwright.Databases
         /// <summary>
         /// Helper for formatting query statements.
         /// </summary>
+        /// <remarks>
+        /// Note that the upsert component cannot be used for columns containing blob/clob data types.
+        /// </remarks>
 
         public class UpsertHelper : Helper
         {
@@ -36,7 +39,7 @@ namespace Shipwright.Databases
                 return $@"
                     select {string.Join( ", ", columnsToSelect )}
                     from {table}
-                    where {string.Join( " and ", conditions )};";
+                    where {string.Join( " and ", conditions )}";
             }
 
             /// <summary>
@@ -59,7 +62,7 @@ namespace Shipwright.Databases
 
                 return $@"
                     insert into {table} ( {string.Join( ", ", columns )} )
-                    values ( {string.Join( ", ", values )} );";
+                    values ( {string.Join( ", ", values )} )";
             }
 
             /// <summary>
@@ -88,7 +91,7 @@ namespace Shipwright.Databases
                 return $@"
                     update {table}
                     set {string.Join( ", ", updates )}
-                    where {string.Join( " and ", conditions )};";
+                    where {string.Join( " and ", conditions )}";
             }
         }
     }
