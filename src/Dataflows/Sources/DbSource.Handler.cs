@@ -110,6 +110,9 @@ namespace Shipwright.Dataflows.Sources
                         extractByColumn( reader, data );
                     }
 
+                    // perform any provider-specific operations on the reader
+                    connectionFactory.FinishReadingCurrentRecord( reader );
+
                     return new Record( dataflow, source, data, ++position );
                 }
 
