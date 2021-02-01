@@ -108,8 +108,10 @@ namespace Shipwright.Dataflows.Sources.CsvSourceTests
                     ThrowOnBadData = false,
                 };
 
-                await method();
+                var records = await method();
                 dataflow.Events.Should().NotBeEmpty();
+
+                records.Should().HaveCount( 1 );
             }
 
             [Fact]
@@ -123,14 +125,14 @@ namespace Shipwright.Dataflows.Sources.CsvSourceTests
                 };
 
                 var ex = await Assert.ThrowsAsync<BadDataException>( method );
-                Assert.Equal( 2, ex.ReadingContext.RawRow );
+                Assert.Equal( 3, ex.ReadingContext.RawRow );
 
                 dataflow.Events.Should().ContainSingle().Subject.Should().BeEquivalentTo( new LogEvent
                 {
                     IsFatal = true,
                     Level = Microsoft.Extensions.Logging.LogLevel.Error,
                     Description = string.Format( Resources.CsvHelperMessages.UnescapedQuote, source.Settings.Quote ),
-                    Value = new { Line = 2, source.Path },
+                    Value = new { Line = 3, source.Path },
                 }, options => options.ComparingByMembers<LogEvent>() );
             }
 
@@ -144,15 +146,17 @@ namespace Shipwright.Dataflows.Sources.CsvSourceTests
                     ThrowOnBadData = false,
                 };
 
-                await method();
+                var records = await method();
 
                 dataflow.Events.Should().ContainSingle().Subject.Should().BeEquivalentTo( new LogEvent
                 {
                     IsFatal = true,
                     Level = Microsoft.Extensions.Logging.LogLevel.Error,
                     Description = string.Format( Resources.CsvHelperMessages.UnescapedQuote, source.Settings.Quote ),
-                    Value = new { Line = 2, source.Path },
+                    Value = new { Line = 3, source.Path },
                 }, options => options.ComparingByMembers<LogEvent>() );
+
+                records.Should().HaveCount( 1 );
             }
 
             [Fact]
@@ -187,7 +191,7 @@ namespace Shipwright.Dataflows.Sources.CsvSourceTests
                     ThrowOnBadData = false,
                 };
 
-                await method();
+                var records = await method();
 
                 dataflow.Events.Should().ContainSingle().Subject.Should().BeEquivalentTo( new LogEvent
                 {
@@ -196,6 +200,8 @@ namespace Shipwright.Dataflows.Sources.CsvSourceTests
                     Description = string.Format( Resources.CsvHelperMessages.DuplicateHeaderName, "A" ),
                     Value = new { Line = 2 },
                 }, options => options.ComparingByMembers<LogEvent>() );
+
+                records.Should().BeEmpty();
             }
 
             [Theory]

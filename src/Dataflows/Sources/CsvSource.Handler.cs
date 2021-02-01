@@ -110,6 +110,7 @@ namespace Shipwright.Dataflows.Sources
 
                     catch ( Exception ex )
                     {
+                        more = false;
                         var rethrow = true;
                         var @event = new LogEvent { IsFatal = true, Level = LogLevel.Error, Description = ex.Message };
 
