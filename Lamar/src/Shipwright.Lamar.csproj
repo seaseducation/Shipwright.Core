@@ -27,7 +27,7 @@
 
     <!-- allow access to test project to avoid unnecessary public modifiers -->
     <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
-      <_Parameter1>Shipwright.Core.Lamar.Test</_Parameter1>
+      <_Parameter1>Shipwright.Lamar.Test</_Parameter1>
     </AssemblyAttribute>
 
   </ItemGroup>

@@ -22,7 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Core\test\Shipwright.Core.Test.csproj" />
-    <ProjectReference Include="..\src\Shipwright.Core.Lamar.csproj" />
+    <ProjectReference Include="..\src\Shipwright.Lamar.csproj" />
   </ItemGroup>
 
 </Project>

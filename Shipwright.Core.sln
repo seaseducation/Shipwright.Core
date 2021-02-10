@@ -18,9 +18,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shipwright.Core.Test", "Cor
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lamar", "Lamar", "{0BD0A4C3-62FE-4062-A603-A30619F6305E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shipwright.Core.Lamar", "Lamar\src\Shipwright.Core.Lamar.csproj", "{5FF95D19-B9AB-43D7-9193-DF7A3D740684}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shipwright.Lamar", "Lamar\src\Shipwright.Lamar.csproj", "{5FF95D19-B9AB-43D7-9193-DF7A3D740684}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shipwright.Core.Lamar.Test", "Lamar\test\Shipwright.Core.Lamar.Test.csproj", "{695CDFC6-941A-4888-A313-19BE7AB6B7E4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shipwright.Lamar.Test", "Lamar\test\Shipwright.Lamar.Test.csproj", "{695CDFC6-941A-4888-A313-19BE7AB6B7E4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Example", "Example", "{B950DFC1-9AB4-4029-B2FF-2084F9AFA22A}"
 EndProject
