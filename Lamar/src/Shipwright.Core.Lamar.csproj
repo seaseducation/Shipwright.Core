@@ -8,7 +8,7 @@
 
     <!-- NuGet package info -->
     <Version>1.0.0-rc.1.6</Version>
-    <PackageId>Shipwright.Core.Lamar</PackageId>
+    <PackageId>Shipwright.Lamar</PackageId>
     <Authors>TTCO Holding Company Inc. and Contributors</Authors>
     <Copyright>Copyright 2020 TTCO Holding Company Inc. and Contributors</Copyright>
     <Description>Core components of the Shipwright Extract-Transform-Load (ETL) toolset using Lamar IoC.</Description>
