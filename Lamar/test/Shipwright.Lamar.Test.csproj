@@ -21,8 +21,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\test\Shipwright.Core.Test.csproj" />
-    <ProjectReference Include="..\src\Shipwright.Core.Lamar.csproj" />
+    <ProjectReference Include="..\..\Core\test\Shipwright.Core.Test.csproj" />
+    <ProjectReference Include="..\src\Shipwright.Lamar.csproj" />
   </ItemGroup>
 
 </Project>
