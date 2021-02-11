@@ -1,0 +1,55 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <RootNamespace>Shipwright</RootNamespace>
+    <NoWarn>1701;1702;1998</NoWarn>
+    <Nullable>enable</Nullable>
+
+    <!-- NuGet package info -->
+    <Version>1.0.0-rc.1.4</Version>
+    <PackageId>Shipwright.CsvHelper</PackageId>
+    <Authors>TTCO Holding Company Inc. and Contributors</Authors>
+    <Copyright>Copyright 2020 TTCO Holding Company Inc. and Contributors</Copyright>
+    <Description>Shipwright components for working with CSV files using the CsvHelper library.</Description>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <RepositoryUrl>https://github.com/seaseducation/Shipwright.CsvHelper</RepositoryUrl>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <DocumentationFile>bin/Shipwright.CsvHelper.xml</DocumentationFile>
+    <PackageReleaseNotes>See https://github.com/seaseducation/Shipwright.CsvHelper/releases</PackageReleaseNotes>
+  </PropertyGroup>
+
+  <ItemGroup>
+
+    <!-- allow file nesting in ide -->
+    <ProjectCapability Include="DynamicDependentFile" />
+    <ProjectCapability Include="DynamicFileNesting" />
+
+    <!-- allow access to test project to avoid unnecessary public modifiers -->
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+      <_Parameter1>Shipwright.CsvHelper.Test</_Parameter1>
+    </AssemblyAttribute>
+
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CsvHelper" Version="15.0.10" />
+    <PackageReference Include="Shipwright.Core" Version="1.0.0-rc.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Resources\CsvHelperMessages.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CsvHelperMessages.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\CsvHelperMessages.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>CsvHelperMessages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  
+</Project>
