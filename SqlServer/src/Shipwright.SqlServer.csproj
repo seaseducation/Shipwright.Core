@@ -7,16 +7,12 @@
     <Nullable>enable</Nullable>
 
     <!-- NuGet package info -->
-    <Version>1.0.0-rc.1.0</Version>
     <PackageId>Shipwright.SqlServer</PackageId>
-    <Authors>TTCO Holding Company Inc. and Contributors</Authors>
-    <Copyright>Copyright 2020 TTCO Holding Company Inc. and Contributors</Copyright>
     <Description>Shipwright components for Microsoft SQL Server.</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <RepositoryUrl>https://github.com/seaseducation/Shipwright.SqlServer.git</RepositoryUrl>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <DocumentationFile>bin/Shipwright.SqlServer.xml</DocumentationFile>
-    <PackageReleaseNotes>See https://github.com/seaseducation/Shipwright.SqlServer/releases</PackageReleaseNotes>
+    
   </PropertyGroup>
 
   <ItemGroup>
