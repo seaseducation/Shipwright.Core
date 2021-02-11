@@ -35,6 +35,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shipwright.CsvHelper", "Csv
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shipwright.CsvHelper.Test", "CsvHelper\test\Shipwright.CsvHelper.Test.csproj", "{EC5AA56D-4927-4038-9C20-C62346909057}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shipwright.SqlServer", "SqlServer\src\Shipwright.SqlServer.csproj", "{FD2B4D11-8FD2-463D-B52B-FC0A22E24B34}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SqlServer", "SqlServer", "{C9DF674D-56AA-4814-B51B-4591443CAD8E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shipwright.SqlServer.Test", "SqlServer\test\Shipwright.SqlServer.Test.csproj", "{FA9B9438-0ABE-47D3-954E-D25547DB398A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +75,14 @@ Global
 		{EC5AA56D-4927-4038-9C20-C62346909057}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC5AA56D-4927-4038-9C20-C62346909057}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EC5AA56D-4927-4038-9C20-C62346909057}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD2B4D11-8FD2-463D-B52B-FC0A22E24B34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD2B4D11-8FD2-463D-B52B-FC0A22E24B34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD2B4D11-8FD2-463D-B52B-FC0A22E24B34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD2B4D11-8FD2-463D-B52B-FC0A22E24B34}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA9B9438-0ABE-47D3-954E-D25547DB398A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA9B9438-0ABE-47D3-954E-D25547DB398A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA9B9438-0ABE-47D3-954E-D25547DB398A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA9B9438-0ABE-47D3-954E-D25547DB398A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -79,6 +93,8 @@ Global
 		{FBD66118-0D7B-4FA9-B093-1486AFC81F13} = {B950DFC1-9AB4-4029-B2FF-2084F9AFA22A}
 		{533738D5-3B77-4A6F-9CE1-89C69A2DF62D} = {FB43476A-1B94-4C4F-B0F6-5986B760BA2F}
 		{EC5AA56D-4927-4038-9C20-C62346909057} = {FB43476A-1B94-4C4F-B0F6-5986B760BA2F}
+		{FD2B4D11-8FD2-463D-B52B-FC0A22E24B34} = {C9DF674D-56AA-4814-B51B-4591443CAD8E}
+		{FA9B9438-0ABE-47D3-954E-D25547DB398A} = {C9DF674D-56AA-4814-B51B-4591443CAD8E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {89F33FCC-302A-4C8A-8C10-B408D40AF023}
