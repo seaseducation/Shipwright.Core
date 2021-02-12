@@ -7,16 +7,12 @@
     <Nullable>enable</Nullable>
 
     <!-- NuGet package info -->
-    <Version>1.0.0-rc.1.2</Version>
     <PackageId>Shipwright.Npgsql</PackageId>
-    <Authors>TTCO Holding Company Inc. and Contributors</Authors>
-    <Copyright>Copyright 2020 TTCO Holding Company Inc. and Contributors</Copyright>
     <Description>Shipwright components for PostgreSQL.</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <RepositoryUrl>https://github.com/seaseducation/Shipwright.Npgsql</RepositoryUrl>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <DocumentationFile>bin/Shipwright.Npgsql.xml</DocumentationFile>
-    <PackageReleaseNotes>See https://github.com/seaseducation/Shipwright.Npgsql/releases</PackageReleaseNotes>
+    
   </PropertyGroup>
 
   <ItemGroup>
@@ -34,7 +30,10 @@
 
   <ItemGroup>
     <PackageReference Include="Npgsql" Version="4.1.5" />
-    <PackageReference Include="Shipwright.Core" Version="1.0.0-rc.1.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\src\Shipwright.Core.csproj" />
   </ItemGroup>
 
 </Project>

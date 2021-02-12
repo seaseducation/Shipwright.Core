@@ -7,16 +7,12 @@
     <Nullable>enable</Nullable>
 
     <!-- NuGet package info -->
-    <Version>1.0.0-rc.1.2</Version>
     <PackageId>Shipwright.Oracle</PackageId>
-    <Authors>TTCO Holding Company Inc. and Contributors</Authors>
-    <Copyright>Copyright 2020 TTCO Holding Company Inc. and Contributors</Copyright>
     <Description>Shipwright components for Oracle.</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <RepositoryUrl>https://github.com/seaseducation/Shipwright.Oracle.git</RepositoryUrl>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <DocumentationFile>bin/Shipwright.Oracle.xml</DocumentationFile>
-    <PackageReleaseNotes>See https://github.com/seaseducation/Shipwright.Oracle/releases</PackageReleaseNotes>
+    
   </PropertyGroup>
 
   <ItemGroup>
@@ -34,7 +30,10 @@
 
   <ItemGroup>
     <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="2.19.100" />
-    <PackageReference Include="Shipwright.Core" Version="1.0.0-rc.1.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\src\Shipwright.Core.csproj" />
   </ItemGroup>
   
 </Project>

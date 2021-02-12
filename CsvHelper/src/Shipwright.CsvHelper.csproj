@@ -7,16 +7,11 @@
     <Nullable>enable</Nullable>
 
     <!-- NuGet package info -->
-    <Version>1.0.0-rc.1.4</Version>
     <PackageId>Shipwright.CsvHelper</PackageId>
-    <Authors>TTCO Holding Company Inc. and Contributors</Authors>
-    <Copyright>Copyright 2020 TTCO Holding Company Inc. and Contributors</Copyright>
     <Description>Shipwright components for working with CSV files using the CsvHelper library.</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <RepositoryUrl>https://github.com/seaseducation/Shipwright.CsvHelper</RepositoryUrl>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <DocumentationFile>bin/Shipwright.CsvHelper.xml</DocumentationFile>
-    <PackageReleaseNotes>See https://github.com/seaseducation/Shipwright.CsvHelper/releases</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
@@ -34,7 +29,10 @@
 
   <ItemGroup>
     <PackageReference Include="CsvHelper" Version="15.0.10" />
-    <PackageReference Include="Shipwright.Core" Version="1.0.0-rc.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\src\Shipwright.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>

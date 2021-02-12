@@ -7,16 +7,12 @@
     <Nullable>enable</Nullable>
 
     <!-- NuGet package info -->
-    <Version>1.0.0-rc.1.6</Version>
     <PackageId>Shipwright.Core</PackageId>
-    <Authors>TTCO Holding Company Inc. and Contributors</Authors>
-    <Copyright>Copyright 2020 TTCO Holding Company Inc. and Contributors</Copyright>
     <Description>Core components of the Shipwright Extract-Transform-Load (ETL) toolset.</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <RepositoryUrl>https://github.com/seaseducation/Shipwright.Core.git</RepositoryUrl>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <DocumentationFile>bin/Shipwright.Core.xml</DocumentationFile>
-    <PackageReleaseNotes>See https://github.com/seaseducation/Shipwright.Core/releases</PackageReleaseNotes>
+    
   </PropertyGroup>
 
   <ItemGroup>
