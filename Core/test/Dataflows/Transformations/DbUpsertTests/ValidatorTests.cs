@@ -10,6 +10,7 @@ using Shipwright.Databases;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 using static Shipwright.Dataflows.Transformations.DbUpsert;
 
@@ -90,6 +91,33 @@ namespace Shipwright.Dataflows.Transformations.DbUpsertTests
 
             [Fact]
             public void valid_when_given() => validator.ValidWhen( _ => _.DuplicateKeyEventMessage, count => $"{count}" );
+        }
+
+        public class OnInserted : ValidatorTests
+        {
+            [Fact]
+            public void invalid_when_null() => validator.InvalidWhen( _ => _.OnInserted, null );
+
+            [Fact]
+            public void valid_when_given() => validator.ValidWhen( _ => _.OnInserted, ( r, ct ) => Task.CompletedTask );
+        }
+
+        public class OnUnchanged : ValidatorTests
+        {
+            [Fact]
+            public void invalid_when_null() => validator.InvalidWhen( _ => _.OnUnchanged, null );
+
+            [Fact]
+            public void valid_when_given() => validator.ValidWhen( _ => _.OnUnchanged, ( r, ct ) => Task.CompletedTask );
+        }
+
+        public class OnUpdated : ValidatorTests
+        {
+            [Fact]
+            public void invalid_when_null() => validator.InvalidWhen( _ => _.OnUpdated, null );
+
+            [Fact]
+            public void valid_when_given() => validator.ValidWhen( _ => _.OnUpdated, ( r, ct ) => Task.CompletedTask );
         }
     }
 }

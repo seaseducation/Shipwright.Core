@@ -5,6 +5,8 @@
 
 using Shipwright.Databases;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Shipwright.Dataflows.Transformations
 {
@@ -37,6 +39,32 @@ namespace Shipwright.Dataflows.Transformations
         /// </summary>
 
         public ICollection<Mapping> Mappings { get; init; } = new List<Mapping>();
+
+        /// <summary>
+        /// Defines a delegate for executing code against a dataflow record.
+        /// </summary>
+        /// <param name="record">The dataflow record being transformed.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+
+        public delegate Task NotificationDelegate( Record record, CancellationToken cancellationToken );
+
+        /// <summary>
+        /// Delegate to execute only after a record is inserted.
+        /// </summary>
+
+        public NotificationDelegate OnInserted { get; init; } = ( record, ct ) => Task.CompletedTask;
+
+        /// <summary>
+        /// Delegate to execute only after a record is updated.
+        /// </summary>
+
+        public NotificationDelegate OnUpdated { get; init; } = ( record, ct ) => Task.CompletedTask;
+
+        /// <summary>
+        /// Delegate to execute only when the record is unchanged.
+        /// </summary>
+
+        public NotificationDelegate OnUnchanged { get; init; } = ( record, ct ) => Task.CompletedTask;
 
         /// <summary>
         /// Defines a delegate for generating an event message for when duplicate keys are detected.

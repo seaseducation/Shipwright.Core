@@ -62,6 +62,9 @@ namespace Shipwright.Dataflows.Transformations
                 RuleFor( _ => _.Table ).NotNull().NotWhiteSpace();
                 RuleFor( _ => _.SqlHelper ).NotNull();
                 RuleFor( _ => _.DuplicateKeyEventMessage ).NotNull();
+                RuleFor( _ => _.OnInserted ).NotNull();
+                RuleFor( _ => _.OnUnchanged ).NotNull();
+                RuleFor( _ => _.OnUpdated ).NotNull();
             }
         }
     }

@@ -283,11 +283,18 @@ namespace Shipwright.Dataflows.Transformations
                         {
                             var insert = BuildInsertSql( record, out var parameters );
                             await Execute( insert, parameters, cancellationToken );
+                            await transformation.OnInserted( record, cancellationToken );
                         }
 
                         else if ( ShouldUpdate( record, current, out var update, out var parameters ) )
                         {
                             await Execute( update, parameters, cancellationToken );
+                            await transformation.OnUpdated( record, cancellationToken );
+                        }
+
+                        else
+                        {
+                            await transformation.OnUnchanged( record, cancellationToken );
                         }
                     }
                 }

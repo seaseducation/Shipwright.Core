@@ -207,9 +207,12 @@ namespace Shipwright.Dataflows.Transformations.DbUpsertTests
             private CancellationToken cancellationToken;
             private Task method() => instance().Transform( record, cancellationToken );
 
+            int insertCallbacks = 0;
+            int unchangedCallbacks = 0;
+            int updatedCallbacks = 0;
+
             public Transform()
             {
-                mockHandler = new Mock<Handler>( MockBehavior.Loose, transformation, connectionFactory ) { CallBase = true };
                 transformation = new DbUpsert
                 {
                     ConnectionInfo = new FakeConnectionInfo(),
@@ -217,7 +220,11 @@ namespace Shipwright.Dataflows.Transformations.DbUpsertTests
                     SqlHelper = new FakeSqlHelper(),
                     DuplicateKeyEventMessage = count => string.Format( Resources.CoreErrorMessages.DbUpsertKeyNotUnique, count ),
                     Mappings = Enum.GetValues<ColumnType>().Select( type => fixture.Create<Mapping>() with { Type = type } ).ToList(),
+                    OnInserted = async ( r, ct ) => Interlocked.Increment( ref insertCallbacks ),
+                    OnUnchanged = async ( r, ct ) => Interlocked.Increment( ref unchangedCallbacks ),
+                    OnUpdated = async ( r, ct ) => Interlocked.Increment( ref updatedCallbacks ),
                 };
+                mockHandler = new Mock<Handler>( MockBehavior.Loose, transformation, connectionFactory ) { CallBase = true };
             }
 
             [Fact]
@@ -267,7 +274,7 @@ namespace Shipwright.Dataflows.Transformations.DbUpsertTests
             }
 
             [Fact]
-            public async Task when_query_returns_no_records_performs_insert()
+            public async Task when_query_returns_no_records_performs_insert_and_callback()
             {
                 var keys = fixture.Create<IDictionary<string, object>>();
                 var select = fixture.Create<string>();
@@ -284,6 +291,9 @@ namespace Shipwright.Dataflows.Transformations.DbUpsertTests
                 await method();
                 Assert.Equal( expectedData, record.Data );
                 Assert.Empty( record.Events );
+                Assert.Equal( 1, insertCallbacks );
+                Assert.Equal( 0, unchangedCallbacks );
+                Assert.Equal( 0, updatedCallbacks );
 
                 mockHandler.Verify();
                 mockHandler.Verify( _ => _.Execute( insert, parameters, cancellationToken ), Times.Once() );
@@ -305,6 +315,10 @@ namespace Shipwright.Dataflows.Transformations.DbUpsertTests
                 mockHandler.Setup( _ => _.ShouldUpdate( record, current, out update, out parameters ) ).Returns( false );
 
                 await method();
+                Assert.Equal( 0, insertCallbacks );
+                Assert.Equal( 1, unchangedCallbacks );
+                Assert.Equal( 0, updatedCallbacks );
+
                 mockHandler.Verify();
                 mockHandler.Verify( _ => _.Execute( update, parameters, cancellationToken ), Times.Never() );
             }
@@ -326,6 +340,10 @@ namespace Shipwright.Dataflows.Transformations.DbUpsertTests
                 mockHandler.Setup( _ => _.Execute( update, parameters, cancellationToken ) ).Returns( Task.CompletedTask ).Verifiable();
 
                 await method();
+                Assert.Equal( 0, insertCallbacks );
+                Assert.Equal( 0, unchangedCallbacks );
+                Assert.Equal( 1, updatedCallbacks );
+
                 mockHandler.Verify();
                 mockHandler.Verify( _ => _.Execute( update, parameters, cancellationToken ), Times.Once() );
             }
