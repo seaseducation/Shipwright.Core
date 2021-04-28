@@ -27,7 +27,7 @@ namespace Shipwright.Dataflows.Transformations
                 {
                     if ( mappings != null )
                     {
-                        foreach ( var (field, column, type) in mappings )
+                        foreach ( var (field, column, type, comparer) in mappings )
                         {
                             if ( string.IsNullOrWhiteSpace( field ) || string.IsNullOrWhiteSpace( column ) )
                             {
@@ -44,7 +44,7 @@ namespace Shipwright.Dataflows.Transformations
                 {
                     if ( mappings != null )
                     {
-                        foreach ( var (field, column, type) in mappings )
+                        foreach ( var (field, column, type, comparer) in mappings )
                         {
                             if ( type == ColumnType.Key )
                             {

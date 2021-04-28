@@ -10,9 +10,18 @@ namespace Shipwright.Dataflows.Transformations
     public partial record DbUpsert
     {
         /// <summary>
+        /// Delegate for comparing values to determine whether the target should be updated.
+        /// </summary>
+        /// <param name="incoming">Source value from the dataflow.</param>
+        /// <param name="existing">Target value from the database.</param>
+        /// <returns>True when the column should be updated, otherwise false.</returns>
+
+        public delegate bool ShouldUpdateComparer( object? incoming, object? existing );
+
+        /// <summary>
         /// Declares a mapping between a record field and a database column.
         /// </summary>
 
-        public record Mapping( string Field, string Column, ColumnType Type );
+        public record Mapping( string Field, string Column, ColumnType Type, ShouldUpdateComparer? Comparer = null );
     }
 }
