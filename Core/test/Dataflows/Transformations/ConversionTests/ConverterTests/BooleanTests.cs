@@ -13,7 +13,7 @@ namespace Shipwright.Dataflows.Transformations.ConversionTests.ConverterTests
     {
         private object value;
         private object result;
-        private bool method() => Converters.Boolean.Invoke( value, out result );
+        private bool method() => Converters.Boolean( value, out result );
 
         public class ConvertibleCases : TheoryData<object, bool>
         {

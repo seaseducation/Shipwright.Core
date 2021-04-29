@@ -56,7 +56,7 @@ namespace Shipwright.Dataflows.Transformations
             /// Validator for email addresses.
             /// </summary>
 
-            public static ConverterDelegate Email { get; } = delegate ( object value, out object? result )
+            public static bool Email( object value, out object? result )
             {
                 if ( value is string text && emailValidator.IsValid( text ) )
                 {
@@ -76,21 +76,30 @@ namespace Shipwright.Dataflows.Transformations
 
                 result = null;
                 return false;
-            };
+            }
 
             /// <summary>
             /// Basic boolean converter.
             /// </summary>
 
-            public static ConverterDelegate Boolean { get; } = delegate ( object value, out object? result )
+            public static bool Boolean( object value, out object? result )
             {
-                if ( value is bool converted || (value is string text && bool.TryParse( text, out converted )) )
+                if ( value is bool converted )
                 {
                     result = converted;
                     return true;
                 }
 
-                if ( value is IConvertible convertible )
+                else if ( value is string text )
+                {
+                    if ( bool.TryParse( text, out converted ) )
+                    {
+                        result = converted;
+                        return true;
+                    }
+                }
+
+                else if ( value is IConvertible convertible )
                 {
                     try
                     {
@@ -103,48 +112,46 @@ namespace Shipwright.Dataflows.Transformations
 
                 result = null;
                 return false;
-            };
+            }
 
             /// <summary>
             /// Date converter that yields a <see cref="DateTime"/> value with no time component.
             /// </summary>
 
-            public static ConverterDelegate Date { get; } = delegate ( object value, out object? result )
+            public static bool Date( object value, out object? result )
             {
-                if ( value is DateTime converted || (value is string text && System.DateTime.TryParse( text, out converted )) )
+                if ( DateTime( value, out result ) && result is DateTime converted )
                 {
                     result = converted.Date;
                     return true;
                 }
 
-                if ( value is IConvertible convertible )
-                {
-                    try
-                    {
-                        result = Convert.ToDateTime( convertible ).Date;
-                        return true;
-                    }
-
-                    catch { }
-                }
-
                 result = null;
                 return false;
-            };
+            }
 
             /// <summary>
             /// Date and time converter that yields a <see cref="DateTime"/>.
             /// </summary>
 
-            public static ConverterDelegate DateTime { get; } = delegate ( object value, out object? result )
+            public static bool DateTime( object value, out object? result )
             {
-                if ( value is DateTime converted || (value is string text && System.DateTime.TryParse( text, out converted )) )
+                if ( value is DateTime converted )
                 {
                     result = converted;
                     return true;
                 }
 
-                if ( value is IConvertible convertible )
+                else if ( value is string text )
+                {
+                    if ( System.DateTime.TryParse( text, out converted ) )
+                    {
+                        result = converted;
+                        return true;
+                    }
+                }
+
+                else if ( value is IConvertible convertible )
                 {
                     try
                     {
@@ -157,7 +164,7 @@ namespace Shipwright.Dataflows.Transformations
 
                 result = null;
                 return false;
-            };
+            }
 
             /// <summary>
             /// Creates a converter for decimal values.
