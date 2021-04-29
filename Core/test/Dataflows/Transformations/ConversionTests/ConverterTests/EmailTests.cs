@@ -14,7 +14,7 @@ namespace Shipwright.Dataflows.Transformations.ConversionTests.ConverterTests
     {
         private object value;
         private object result;
-        private bool method() => Converters.Email.Invoke( value, out result );
+        private bool method() => Converters.Email( value, out result );
 
         [Theory]
         [InlineData( long.MaxValue )]
