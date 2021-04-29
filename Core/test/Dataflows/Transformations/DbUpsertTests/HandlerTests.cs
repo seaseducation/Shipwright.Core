@@ -63,17 +63,19 @@ namespace Shipwright.Dataflows.Transformations.DbUpsertTests
             [Fact]
             public async Task returns_false_when_upsert_values_identical()
             {
+                bool Comparer( object source, object target ) => true;
+
                 var mappings = new List<Mapping>
                 {
-                    fixture.Create<Mapping>() with { Type = ColumnType.Key },
-                    fixture.Create<Mapping>() with { Type = ColumnType.Key },
-                    fixture.Create<Mapping>() with { Type = ColumnType.Insert },
-                    fixture.Create<Mapping>() with { Type = ColumnType.Upsert },
-                    fixture.Create<Mapping>() with { Type = ColumnType.Upsert },
-                    fixture.Create<Mapping>() with { Type = ColumnType.Trigger },
+                    fixture.Create<Mapping>() with { Type = ColumnType.Key, Comparer = Comparer },
+                    fixture.Create<Mapping>() with { Type = ColumnType.Key, Comparer = Comparer },
+                    fixture.Create<Mapping>() with { Type = ColumnType.Insert, Comparer = Comparer },
+                    fixture.Create<Mapping>() with { Type = ColumnType.Upsert, Comparer = Comparer },
+                    fixture.Create<Mapping>() with { Type = ColumnType.Upsert, Comparer = Comparer },
+                    fixture.Create<Mapping>() with { Type = ColumnType.Trigger, Comparer = Comparer },
                 };
 
-                foreach ( var (field, parameter, type) in mappings )
+                foreach ( var (field, parameter, type, comparer) in mappings )
                 {
                     record.Data[field] = current[parameter] = fixture.Create<string>();
                 }
@@ -101,21 +103,29 @@ namespace Shipwright.Dataflows.Transformations.DbUpsertTests
                 Assert.Equal( expectedParameters, parameters );
             }
 
-            [Fact]
-            public async Task returns_true_when_basic_upsert_values_different()
+            [Theory]
+            [InlineData( null )]
+            [InlineData( true )]
+            public async Task returns_true_when_basic_upsert_values_different_and_comparer_yields_true_or_null( bool? result )
             {
-                var mappings = new List<Mapping>
+                Mapping createMapping( ColumnType type ) => fixture.Create<Mapping>() with
                 {
-                    fixture.Create<Mapping>() with { Type = ColumnType.Key },
-                    fixture.Create<Mapping>() with { Type = ColumnType.Key },
-                    fixture.Create<Mapping>() with { Type = ColumnType.Insert },
-                    fixture.Create<Mapping>() with { Type = ColumnType.Upsert },
-                    fixture.Create<Mapping>() with { Type = ColumnType.Upsert },
-                    fixture.Create<Mapping>() with { Type = ColumnType.Upsert },
-                    fixture.Create<Mapping>() with { Type = ColumnType.Trigger },
+                    Type = type,
+                    Comparer = result.HasValue ? ( source, target ) => result.Value : null,
                 };
 
-                foreach ( var (field, parameter, type) in mappings )
+                var mappings = new List<Mapping>
+                {
+                    createMapping( ColumnType.Key ),
+                    createMapping( ColumnType.Key ),
+                    createMapping( ColumnType.Insert ),
+                    createMapping( ColumnType.Upsert ),
+                    createMapping( ColumnType.Upsert ),
+                    createMapping( ColumnType.Upsert ),
+                    createMapping( ColumnType.Trigger ),
+                };
+
+                foreach ( var (field, parameter, type, comparer) in mappings )
                 {
                     record.Data[field] = current[parameter] = fixture.Create<string>();
                 }
@@ -148,20 +158,59 @@ namespace Shipwright.Dataflows.Transformations.DbUpsertTests
             }
 
             [Fact]
-            public async Task returns_true_when_structural_upsert_values_different()
+            public async Task returns_false_when_basic_upsert_values_different_and_comparer_yields_false()
             {
-                var mappings = new List<Mapping>
+                Mapping createMapping( ColumnType type ) => fixture.Create<Mapping>() with
                 {
-                    fixture.Create<Mapping>() with { Type = ColumnType.Key },
-                    fixture.Create<Mapping>() with { Type = ColumnType.Key },
-                    fixture.Create<Mapping>() with { Type = ColumnType.Insert },
-                    fixture.Create<Mapping>() with { Type = ColumnType.Upsert },
-                    fixture.Create<Mapping>() with { Type = ColumnType.Upsert },
-                    fixture.Create<Mapping>() with { Type = ColumnType.Upsert },
-                    fixture.Create<Mapping>() with { Type = ColumnType.Trigger },
+                    Type = type,
+                    Comparer = ( source, target ) => false,
                 };
 
-                foreach ( var (field, parameter, type) in mappings )
+                var mappings = new List<Mapping>
+                {
+                    createMapping( ColumnType.Key ),
+                    createMapping( ColumnType.Key ),
+                    createMapping( ColumnType.Insert ),
+                    createMapping( ColumnType.Upsert ),
+                    createMapping( ColumnType.Upsert ),
+                    createMapping( ColumnType.Upsert ),
+                    createMapping( ColumnType.Trigger ),
+                };
+
+                foreach ( var (field, parameter, type, comparer) in mappings )
+                {
+                    record.Data[field] = current[parameter] = fixture.Create<string>();
+                }
+
+                transformation = transformation with { Mappings = mappings };
+                var actual = method();
+
+                Assert.False( actual );
+            }
+
+            [Theory]
+            [InlineData( true )]
+            [InlineData( null )]
+            public async Task returns_true_when_structural_upsert_values_different_and_comparer_yields_true_or_null( bool? result )
+            {
+                Mapping createMapping( ColumnType type ) => fixture.Create<Mapping>() with
+                {
+                    Type = type,
+                    Comparer = result.HasValue ? ( source, target ) => result.Value : null,
+                };
+
+                var mappings = new List<Mapping>
+                {
+                    createMapping( ColumnType.Key ),
+                    createMapping( ColumnType.Key ),
+                    createMapping( ColumnType.Insert ),
+                    createMapping( ColumnType.Upsert ),
+                    createMapping( ColumnType.Upsert ),
+                    createMapping( ColumnType.Upsert ),
+                    createMapping( ColumnType.Trigger ),
+                };
+
+                foreach ( var (field, parameter, type, comparer) in mappings )
                 {
                     record.Data[field] = current[parameter] = fixture.Create<string>();
                 }
@@ -194,6 +243,40 @@ namespace Shipwright.Dataflows.Transformations.DbUpsertTests
                 Assert.True( actual );
                 Assert.Equal( expectedSql, sql );
                 Assert.Equal( expectedParameters, parameters );
+            }
+
+            [Fact]
+            public async Task returns_false_when_structural_upsert_values_different_and_comparer_yields_false()
+            {
+                Mapping createMapping( ColumnType type ) => fixture.Create<Mapping>() with
+                {
+                    Type = type,
+                    Comparer = ( source, target ) => false,
+                };
+
+                var mappings = new List<Mapping>
+                {
+                    createMapping( ColumnType.Key ),
+                    createMapping( ColumnType.Key ),
+                    createMapping( ColumnType.Insert ),
+                    createMapping( ColumnType.Upsert ),
+                    createMapping( ColumnType.Upsert ),
+                    createMapping( ColumnType.Upsert ),
+                    createMapping( ColumnType.Trigger ),
+                };
+
+                foreach ( var (field, parameter, type, comparer) in mappings )
+                {
+                    record.Data[field] = current[parameter] = fixture.Create<string>();
+                }
+
+                current[mappings[3].Column] = fixture.CreateMany<int>();
+                current[mappings[4].Column] = fixture.CreateMany<int>();
+
+                transformation = transformation with { Mappings = mappings };
+                var actual = method();
+
+                Assert.False( actual );
             }
         }
 

@@ -76,7 +76,7 @@ namespace Shipwright.Dataflows.Transformations
                 var keyMap = new Dictionary<string, ColumnValue>();
                 var columns = new List<string>();
 
-                foreach ( var (field, column, type) in transformation.Mappings )
+                foreach ( var (field, column, type, comparer) in transformation.Mappings )
                 {
                     if ( type == ColumnType.Key )
                     {
@@ -186,7 +186,7 @@ namespace Shipwright.Dataflows.Transformations
                 var index = 0;
                 var map = new Dictionary<string, ColumnValue>();
 
-                foreach ( var (field, column, type) in transformation.Mappings )
+                foreach ( var (field, column, type, comparer) in transformation.Mappings )
                 {
                     map[column] = new ColumnValue( column, $"p{++index}", record.Data.TryGetValue( field, out var value ) ? value : null! );
                 }
@@ -234,7 +234,7 @@ namespace Shipwright.Dataflows.Transformations
                 ColumnValue extract( string field, string column ) =>
                     new ColumnValue( column, $"p{++index}", record.Data.TryGetValue( field, out var value ) ? value : null! );
 
-                foreach ( var (field, column, type) in transformation.Mappings )
+                foreach ( var (field, column, type, comparer) in transformation.Mappings )
                 {
                     if ( type == ColumnType.Key )
                     {
@@ -248,12 +248,12 @@ namespace Shipwright.Dataflows.Transformations
 
                     if ( type == ColumnType.Upsert )
                     {
-                        var candidate = extract( field, column );
-                        var comparer = current.TryGetValue( column, out var value ) ? value : null!;
-
-                        if ( !IsEqual( candidate.Value, comparer ) )
+                        var incoming = extract( field, column );
+                        var existing = current.TryGetValue( column, out var value ) ? value : null!;
+                        
+                        if ( !IsEqual( incoming.Value, existing ) && ( comparer?.Invoke( incoming.Value, existing ) ?? true ) )
                         {
-                            updates[column] = map[column] = candidate;
+                            updates[column] = map[column] = incoming;
                         }
                     }
                 }
