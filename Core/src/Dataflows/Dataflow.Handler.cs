@@ -88,8 +88,19 @@ namespace Shipwright.Dataflows
                 var buffer = new BufferBlock<Record>( blockOptions );
                 var action = new ActionBlock<Record>( async record =>
                 {
-                    await handler.Transform( record, cancellationToken );
-                    await NotifyRecordCompleted( record, cancellationToken );
+                    try
+                    {
+                        await handler.Transform( record, cancellationToken );
+                        await NotifyRecordCompleted( record, cancellationToken );
+                    }
+
+                    // complete on unhandled exceptions
+                    catch
+                    {
+                        buffer.Complete();
+                        throw;
+                    }
+
                 }, blockOptions );
 
                 // links the buffer block to the action block for automatic record transfer
