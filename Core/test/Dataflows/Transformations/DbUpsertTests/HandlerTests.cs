@@ -80,6 +80,11 @@ namespace Shipwright.Dataflows.Transformations.DbUpsertTests
                     record.Data[field] = current[parameter] = fixture.Create<string>();
                 }
 
+                // include a convertible equivalent decimal value
+                var val = fixture.Create<int>();
+                current[mappings[4].Column] = val;
+                record.Data[mappings[4].Field] = Convert.ToDecimal( val );
+
                 var keyMap = new List<ColumnValue>
                 {
                     new ColumnValue( mappings[0].Column, "p1", record.Data[mappings[0].Field] ),
@@ -130,6 +135,9 @@ namespace Shipwright.Dataflows.Transformations.DbUpsertTests
                     record.Data[field] = current[parameter] = fixture.Create<string>();
                 }
 
+                // include a differing decimal convertible value
+                current[mappings[4].Column] = 42;
+                
                 var keyMap = new List<ColumnValue>
                 {
                     new ColumnValue( mappings[0].Column, "p1", record.Data[mappings[0].Field] ),
@@ -140,7 +148,7 @@ namespace Shipwright.Dataflows.Transformations.DbUpsertTests
                 {
                     // only the changed columns should be included in an update
                     new ColumnValue( mappings[3].Column, "p3", record.Data[mappings[3].Field] = fixture.Create<string>() ),
-                    new ColumnValue( mappings[4].Column, "p4", record.Data[mappings[4].Field] = fixture.Create<string>() ),
+                    new ColumnValue( mappings[4].Column, "p4", record.Data[mappings[4].Field] = 43M ),
 
                     // trigger column should be included in any update, regardless of whether it has changed
                     new ColumnValue( mappings[6].Column, "p6", record.Data[mappings[6].Field] ),

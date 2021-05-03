@@ -25,13 +25,22 @@ namespace Shipwright.Dataflows.Transformations
             {
                 cultureInfo ??= CultureInfo.CurrentCulture;
 
-                if ( value is int converted || (value is string text && int.TryParse( text, styles, cultureInfo, out converted )) )
+                if ( value is int converted )
                 {
                     result = converted;
                     return true;
                 }
 
-                if ( value is IConvertible convertible )
+                else if ( value is string text )
+                {
+                    if ( int.TryParse( text, styles, cultureInfo, out converted ) )
+                    {
+                        result = converted;
+                        return true;
+                    }
+                }
+
+                else if ( value is IConvertible convertible )
                 {
                     try
                     {
@@ -174,13 +183,22 @@ namespace Shipwright.Dataflows.Transformations
             {
                 cultureInfo ??= CultureInfo.CurrentCulture;
 
-                if ( value is decimal converted || (value is string text && decimal.TryParse( text, styles, cultureInfo, out converted )) )
+                if ( value is decimal converted )
                 {
                     result = converted;
                     return true;
                 }
 
-                if ( value is IConvertible convertible )
+                else if ( value is string text )
+                {
+                    if ( decimal.TryParse( text, styles, cultureInfo, out converted ) )
+                    {
+                        result = converted;
+                        return true;
+                    }
+                }
+
+                else if ( value is IConvertible convertible )
                 {
                     try
                     {

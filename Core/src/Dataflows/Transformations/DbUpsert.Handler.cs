@@ -210,6 +210,13 @@ namespace Shipwright.Dataflows.Transformations
                     return (boolSource && intComparer == 1) || (!boolSource && intComparer == 0);
                 }
 
+                // handle decimal/numeric conversions
+                // this handles edge cases (specific to oracle) where dapper reads a numeric value into an unexpected data type
+                if ( source is decimal decimalSource && comparer is IConvertible convertible )
+                {
+                    return decimalSource.Equals( Convert.ToDecimal( convertible ) );
+                }
+
                 // handle typical comparisons
                 return Equals( source, comparer );
             }
@@ -250,8 +257,8 @@ namespace Shipwright.Dataflows.Transformations
                     {
                         var incoming = extract( field, column );
                         var existing = current.TryGetValue( column, out var value ) ? value : null!;
-                        
-                        if ( !IsEqual( incoming.Value, existing ) && ( comparer?.Invoke( incoming.Value, existing ) ?? true ) )
+
+                        if ( !IsEqual( incoming.Value, existing ) && (comparer?.Invoke( incoming.Value, existing ) ?? true) )
                         {
                             updates[column] = map[column] = incoming;
                         }
