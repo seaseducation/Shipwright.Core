@@ -41,5 +41,14 @@ namespace Shipwright.Dataflows.Sources
         /// </summary>
 
         public bool ThrowOnBadData { get; init; } = true;
+
+        /// <summary>
+        /// Number of lines in the file to skip before starting CSV parsing.
+        /// Due to its nature, normal CSV parsing rules will not apply to the skipped lines.
+        /// This is intended for cases where header rows in files need to be ignored and not
+        /// even have their number of fields counted by CSV helper.
+        /// </summary>
+
+        public int SkipLines { get; init; } = 0;
     }
 }

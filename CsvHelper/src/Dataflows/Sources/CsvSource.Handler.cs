@@ -61,6 +61,15 @@ namespace Shipwright.Dataflows.Sources
             private static async IAsyncEnumerable<Record> Read( CsvSource source, Dataflow dataflow )
             {
                 using var reader = File.OpenText( source.Path );
+
+                for ( var skip = 0; skip < source.SkipLines; skip++ )
+                {
+                    if ( !reader.EndOfStream )
+                    {
+                        await reader.ReadLineAsync();
+                    }
+                }
+
                 using var csv = new CsvReader( reader, source.Settings );
                 var headers = new Dictionary<int, string>();
 
@@ -85,7 +94,7 @@ namespace Shipwright.Dataflows.Sources
                         }
                     }
 
-                    yield return new Record( dataflow, source, data, csv.Context.Row );
+                    yield return new Record( dataflow, source, data, csv.Context.Row + source.SkipLines );
                 }
             }
 

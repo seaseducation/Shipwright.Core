@@ -23,6 +23,7 @@ namespace Shipwright.Dataflows.Sources
             {
                 RuleFor( _ => _.Path ).NotNull().NotWhiteSpace();
                 RuleFor( _ => _.Settings ).NotNull();
+                RuleFor( _ => _.SkipLines ).GreaterThanOrEqualTo( 0 );
             }
         }
     }
