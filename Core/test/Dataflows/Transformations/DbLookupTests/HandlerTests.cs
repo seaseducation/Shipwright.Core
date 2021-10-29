@@ -69,6 +69,15 @@ namespace Shipwright.Dataflows.Transformations.DbLookupTests
                 expected[third.parameter] = null;
                 transformation.Input.Add( third );
 
+                // add inline parameter
+                var fourth = fixture.Create<(string parameter, string value)>();
+                transformation.Parameters.Add( ( fourth.parameter, fourth.value ) );
+                expected[fourth.parameter] = fourth.value;
+
+                // add inline parameter that conflicts with a field name
+                // the input parameter should take its place
+                transformation.Parameters.Add( ( first.parameter, Guid.NewGuid() ) );
+
                 var actual = method();
                 actual.Should().BeEquivalentTo( expected );
             }

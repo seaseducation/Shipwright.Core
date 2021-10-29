@@ -47,6 +47,14 @@ namespace Shipwright.Dataflows.Transformations
             {
                 var parameters = new Dictionary<string, object?>();
 
+                foreach ( var (name, value) in transformation.Parameters )
+                {
+                    if ( !string.IsNullOrWhiteSpace( name ) )
+                    {
+                        parameters[name] = value;
+                    }
+                }
+
                 foreach ( var (field, param) in transformation.Input )
                 {
                     parameters[param] = record.Data.TryGetValue( field, out var value )
