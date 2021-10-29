@@ -41,7 +41,7 @@ namespace Shipwright.Dataflows.Transformations
             /// Defaults to true.
             /// </summary>
 
-            public bool ClearField = true;
+            public bool ClearField { get; init; } = true;
         }
     }
 }
