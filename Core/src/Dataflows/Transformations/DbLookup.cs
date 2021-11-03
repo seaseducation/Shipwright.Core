@@ -68,5 +68,11 @@ namespace Shipwright.Dataflows.Transformations
         /// </summary>
 
         public bool CacheResults { get; set; }
+
+        /// <summary>
+        /// Additional named values that can be added to the parameter input. 
+        /// </summary>
+
+        public ICollection<(string name, object value)> Parameters { get; init; } = new List<(string, object)>();
     }
 }

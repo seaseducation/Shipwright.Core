@@ -93,5 +93,14 @@ namespace Shipwright.Dataflows.Transformations.DbLookupTests
             [Theory, AutoData]
             public void valid_when_given( string value ) => validator.ValidWhen( _ => _.Sql, value );
         }
+
+        public class Parameters : ValidatorTests
+        {
+            [Fact]
+            public void invalid_when_null() => validator.InvalidWhen( _ => _.Parameters, null );
+
+            [Fact]
+            public void valid_when_given() => validator.ValidWhen( _ => _.Parameters, new List<(string, object)>() );
+        }
     }
 }

@@ -66,6 +66,7 @@ namespace Shipwright.Dataflows.Transformations
                 RuleFor( _ => _.ConnectionInfo ).NotNull();
                 RuleFor( _ => _.Input ).NotNull().Must( HaveDefinedValues );
                 RuleFor( _ => _.Output ).NotNull().Must( HaveDefinedValues );
+                RuleFor( _ => _.Parameters ).NotNull();
                 RuleFor( _ => _.QueryMultipleRecordEvent ).NotNull().SetValidator( new FailureEventSettingValidator() );
                 RuleFor( _ => _.QueryZeroRecordEvent ).NotNull().SetValidator( new FailureEventSettingValidator() );
                 RuleFor( _ => _.Sql ).NotNull().NotWhiteSpace();
