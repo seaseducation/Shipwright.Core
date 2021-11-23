@@ -33,5 +33,19 @@ namespace Shipwright.Dataflows.Sources.CsvSourceTests
             [Fact]
             public void valid_when_given() => validator.ValidWhen( _ => _.Settings, new CsvConfiguration( CultureInfo.CurrentCulture ) );
         }
+
+        public class SkipLines : ValidatorTests
+        {
+            [Theory]
+            [InlineData( -1 )]
+            [InlineData( -2 )]
+            public void invalid_when_less_than_zero( int value ) => validator.InvalidWhen( _ => _.SkipLines, value );
+
+            [Theory]
+            [InlineData( 0 )]
+            [InlineData( 1 )]
+            [InlineData( 2 )]
+            public void valid_when_greater_or_equal_to_zero( int value ) => validator.ValidWhen( _ => _.SkipLines, value );
+        }
     }
 }

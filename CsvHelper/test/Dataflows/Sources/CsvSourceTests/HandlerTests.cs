@@ -279,7 +279,61 @@ namespace Shipwright.Dataflows.Sources.CsvSourceTests
                 }
             }
 
+            [Theory]
+            [InlineData( TrimOptions.Trim, null )]
+            [InlineData( TrimOptions.None, " " )]
+            public async Task returns_select_records_when_lines_skipped( TrimOptions trimOptions, string whitespace )
+            {
+                source = new CsvSource
+                {
+                    Path = "Dataflows/Sources/CsvSourceTests/ValidFile.csv",
+                    Settings = new CsvConfiguration( CultureInfo.CurrentCulture ) { HasHeaderRecord = false, TrimOptions = trimOptions },
+                    SkipLines = 1,
+                };
 
+                var expected = new List<Record>
+                {
+                    // this record should be absent
+                    //new Record( dataflow, source, new Dictionary<string,object> { { "Field_0", "A" }, { "Field_1", "B" }, { "Field_2", "C" } }, 1 ),
+                    new Record( dataflow, source, new Dictionary<string,object> { { "Field_0", "x" }, { "Field_1", "y" }, { "Field_2", "z" } }, 2 ),
+                    new Record( dataflow, source, new Dictionary<string,object> { { "Field_0", "1" }, { "Field_1", "2" }, { "Field_2", "\"3\"" } }, 3 ),
+
+                    // whitespace should be null when trimming
+                    new Record( dataflow, source, new Dictionary<string,object> { { "Field_0", "m" }, { "Field_1", whitespace }, { "Field_2", "n" } }, 4 ),
+
+                    // blank should always be null
+                    new Record( dataflow, source, new Dictionary<string,object> { { "Field_0", "r" }, { "Field_1", null }, { "Field_2", "t" } }, 5 ),
+                };
+
+                var actual = (await method()).ToArray();
+                Assert.Equal( expected.Count, actual.Count() );
+
+                for ( var i = 0; i < expected.Count; i++ )
+                {
+                    actual[i].Dataflow.Should().BeSameAs( expected[i].Dataflow );
+                    actual[i].Source.Should().BeSameAs( expected[i].Source );
+                    actual[i].Data.Should().BeEquivalentTo( expected[i].Data );
+                    actual[i].Origin.Should().BeEquivalentTo( expected[i].Origin );
+                    actual[i].Position.Should().Be( expected[i].Position );
+                    actual[i].Events.Should().BeEquivalentTo( expected[i].Events );
+                }
+            }
+
+            [Theory]
+            [InlineData( TrimOptions.Trim )]
+            [InlineData( TrimOptions.None )]
+            public async Task returns_no_records_when_lines_skipped_exceed_lines_in_file( TrimOptions trimOptions )
+            {
+                source = new CsvSource
+                {
+                    Path = "Dataflows/Sources/CsvSourceTests/ValidFile.csv",
+                    Settings = new CsvConfiguration( CultureInfo.CurrentCulture ) { HasHeaderRecord = false, TrimOptions = trimOptions },
+                    SkipLines = 100,
+                };
+
+                var actual = (await method()).ToArray();
+                Assert.Empty( actual );
+            }
         }
     }
 }
