@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
     <RootNamespace>Shipwright</RootNamespace>
     <NoWarn>1701;1702;1998</NoWarn>
     <Nullable>enable</Nullable>
@@ -12,6 +11,7 @@
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <DocumentationFile>bin/Shipwright.SqlServer.xml</DocumentationFile>
+    <TargetFramework>net6.0</TargetFramework>
     
   </PropertyGroup>
 
