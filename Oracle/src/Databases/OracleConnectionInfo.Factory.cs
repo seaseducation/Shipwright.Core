@@ -28,7 +28,8 @@ namespace Shipwright.Databases
 
             public Factory( string connectionString )
             {
-                this.connectionString = connectionString ?? throw new ArgumentNullException( nameof( connectionString ) );
+                this.connectionString =
+                    new OracleConnectionStringBuilder( connectionString ) { ConnectionTimeout = 120 }.ToString();
             }
 
             /// <summary>
