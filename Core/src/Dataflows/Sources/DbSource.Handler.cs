@@ -44,7 +44,7 @@ namespace Shipwright.Dataflows.Sources
                 if ( dataflow == null ) throw new ArgumentNullException( nameof( dataflow ) );
 
                 var position = 0;
-                var command = new CommandDefinition( source.Sql, parameters: source.Parameters, cancellationToken: cancellationToken );
+                var command = new CommandDefinition( source.Sql, parameters: source.Parameters, commandTimeout:0, cancellationToken: cancellationToken );
                 var connectionFactory = await connectionDispatcher.Build( source.ConnectionInfo, cancellationToken );
 
                 using var connection = connectionFactory.Create();
